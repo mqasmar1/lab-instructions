@@ -1,0 +1,465 @@
+---
+title: "Lab 08 - University of Edinburgh Art Collection"
+author: "Your Name"
+output: 
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+link-citations: yes
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(tidyverse)
+library(skimr)
+```
+
+## Introduction
+
+The University of Edinburgh Art Collection *"supports the world-leading research and teaching that happens within the University. Comprised of an astonishing range of objects and ideas spanning two millennia and a multitude of artistic forms, the collection reflects not only the long and rich trajectory of the University, but also major national and international shifts in art history."*[^1]
+
+[^1]: Source: <https://collections.ed.ac.uk/art/about>
+```{marginfigure}
+See the sidebar [here](https://collections.ed.ac.uk/art) and note that there are approximately 2970 pieces in the art collection. Note that the exact number may have changed since this lab was written.
+```
+
+In this lab we'll scrape data on art pieces in the [Edinburgh College of Art collection](https://collections.ed.ac.uk/art/search/*:*/Collection:%22edinburgh+college+of+art%7C%7C%7CEdinburgh+College+of+Art%22) and then analyze the scraped data.
+
+**This is a complex, two-part lab!** You'll work in R scripts for web scraping, then switch to this R Markdown file for analysis.
+
+**Estimated time:** 120-150 minutes
+
+## Learning Goals
+
+By the end of this lab, you will be able to:
+
+- Check if web scraping is allowed using `robotstxt`
+- Scrape data from web pages using the `rvest` package
+- Use SelectorGadget to identify CSS selectors
+- Write custom functions in R
+- Use iteration with `map_dfr()` to scrape multiple pages
+- Work with both R scripts (.R) and R Markdown documents (.Rmd)
+- Clean scraped data using string manipulation
+- Handle missing data appropriately
+- Analyze and visualize scraped data
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- ✅ Completed Labs 01-07
+- ✅ Watched lectures on functions, iteration, and web scraping
+- ✅ **Installed SelectorGadget browser extension** (see instructions below)
+- ✅ Forked the lab-instructions repository
+- ✅ Understand HTML basics and CSS selectors
+
+**IMPORTANT: Install SelectorGadget**
+
+SelectorGadget is a tool that helps you identify the CSS selectors needed for web scraping. Install it now:
+```{r selectorgadget, fig.margin = TRUE, echo = FALSE, eval = TRUE}
+knitr::include_graphics("img/selectorgadget.png")
+```
+
+- **Chrome (recommended):** [Install here](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb)
+- **Firefox:** [Install here](https://addons.mozilla.org/en-US/firefox/addon/chropath-for-firefox)
+
+After installation, you should see the SelectorGadget icon next to your browser's search bar.
+
+---
+
+## Understanding This Lab's Structure
+
+**This lab uses both R scripts AND R Markdown files.** Here's why:
+
+- **R Scripts (.R):** Plain text files with only code and brief comments
+
+  - We'll use these for the web scraping stage
+  - They're better for running code interactively and saving scraped data
+
+- **R Markdown (.Rmd):** Documents that combine code, text, and output
+
+  - We'll use this for the analysis stage
+  - They're better for creating reports with explanations
+
+**Here's the organization of your repo:**
+```
+|-data
+| 
+|-lab-08-uoe-art.Rmd              # YOU ARE HERE (for analysis)
+|-lab-08-uoe-art.Rproj
+|
+|-scripts                          # Web scraping scripts
+|  |- 01-scrape-page-one.R        # Scraping a single page
+|  |- 02-scrape-page-function.R   # Writing functions
+|  |- 03-scrape-page-many.R       # Iteration to scrape all pages
+```
+
+**Workflow:**
+
+Step 1. Work through scripts in order (01, then 02, then 03)
+Step 2. Scripts will scrape data and save it to the `data` folder
+Step 3. Return to this .Rmd file for analysis
+Step 4. Commit and push after completing each script!
+
+---
+
+# Getting Started
+
+Navigate to your forked `lab-instructions` repository in JupyterHub and open the `Lab08` folder.
+
+## Verify Your Setup
+
+Before proceeding:
+
+Step 1. Verify you have the `scripts` folder with three .R files
+Step 2. Verify you have this `lab-08-uoe-art.Rmd` file
+Step 3. Check that the Git pane shows YOUR username (not the course organization)
+
+## Warm Up
+
+**Step 1:** Update the YAML, changing the author name to your name.
+
+**Step 2:** Knit this document to make sure it compiles.
+
+**Step 3:** Commit your changes with message "Updated author name".
+
+**Step 4:** Push to GitHub and verify the changes are visible in your repo.
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
+
+---
+
+## Ethical Web Scraping
+
+Before we start scraping, let's talk about ethics and best practices:
+
+**Web Scraping Ethics:**
+
+- Always check if scraping is allowed (we'll do this with `robotstxt`)
+- Don't overwhelm servers with too many rapid requests
+- Respect the website's terms of service
+- Give credit to data sources
+- Be aware that website structure can change
+
+**For this lab:** The University of Edinburgh allows scraping of this public collection, but we should still be respectful. We'll add delays between requests to avoid overwhelming their server.
+
+## Packages
+
+The packages we need for this lab are:
+
+- **tidyverse:** Data wrangling and visualization
+- **robotstxt:** Check if scraping is allowed
+- **rvest:** Web scraping functions
+- **skimr:** Summary statistics (for analysis section)
+
+These packages are already installed. They're loaded in the setup chunk at the top of this file.
+
+## Check Permissions
+
+Let's verify that we're allowed to scrape this website:
+```{r paths-allowed, warning=FALSE, eval = TRUE}
+library(robotstxt)
+library(rvest)
+library(tidyverse)
+
+paths_allowed("https://collections.ed.ac.uk/art")
+```
+
+**What this means:** If the result is `TRUE`, we have permission to scrape. If `FALSE`, we should not proceed.
+
+✅ **Verified!** We can proceed with scraping.
+
+---
+
+# Part 1: Web Scraping
+
+**STOP! Switch to the scripts folder now.**
+
+For the web scraping portion, you'll work in the three R scripts in the `scripts` folder:
+
+**First:** Open and work through `01-scrape-page-one.R`
+
+**Second:** Open and work through `02-scrape-page-function.R`
+
+**Third:** Open and work through `03-scrape-page-many.R`
+
+**Work through each script completely before moving to the next one.**
+
+After you complete all three scripts, you'll have a CSV file in your `data` folder with information about all the art pieces. Then you'll come back to this document to analyze the data.
+
+🧶 ✅ ⬆️ **Remember to commit and push after completing each script!**
+
+---
+
+# Part 2: Analysis
+
+**Welcome back!** If you've completed the three scraping scripts, you should now have a file called `uoe_art.csv` in your `data` folder.
+
+Let's load that data and analyze it.
+
+## Load the Scraped Data
+```{r load-scraped-data, eval = FALSE}
+#remember to switch eval = FALSE to TRUE when you have your data
+uoe_art <- read_csv("data/uoe_art.csv")
+```
+
+**Verify it loaded correctly:**
+```{r verify-data, eval = FALSE}
+glimpse(uoe_art)
+```
+
+You should see three variables: `title`, `artist`, and `link`.
+
+---
+
+## Data Cleaning
+
+Now that we have the data, let's clean it up! Many titles have dates in parentheses at the end. We want to extract those dates into a separate column.
+
+**Our goal:** Separate the `title` column into two columns:
+
+- `title`: The actual artwork title
+- `date`: The date information (if it exists)
+
+We'll use the `separate()` function to split at the first `(` character:
+```{r separate-title-date, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+uoe_art <- uoe_art %>%
+  separate(
+    col = title,
+    into = c("title", "date"),
+    sep = "\\(",                    # Split at first (
+    extra = "merge",                 # If multiple (, keep them together
+    fill = "right"                   # If no (, leave date as NA
+  ) %>%
+  mutate(
+    date = str_remove(date, "\\)"),  # Remove trailing )
+    date = str_squish(date)          # Remove extra whitespace
+  )
+```
+
+**What this code does:**
+
+- `separate()` splits the title at the first `(`
+- `\\(` escapes the special character (parentheses are special in regex)
+- `extra = "merge"` keeps any additional `(` in the date column
+- `fill = "right"` puts NA in date if there's no `(`
+- `str_remove()` gets rid of the closing `)`
+- `str_squish()` cleans up whitespace
+
+---
+
+## Exercise 9
+
+Now let's extract just the year from the date column and save it as a numeric variable.
+
+**Fill in the blanks:**
+```{r extract-year, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+uoe_art <- uoe_art %>%
+  mutate(
+    year = str_extract(___, "\\d{4}"),     # Extract 4-digit number
+    year = as.numeric(___)                  # Convert to numeric
+  )
+```
+
+**What `\\d{4}` means:** This is a regular expression (regex) pattern that means "exactly 4 digits in a row" - perfect for matching years!
+
+**Note:** You'll see warnings when you run this code. That's expected!
+
+**Explain the warnings:** What do the warnings mean? Why are we okay with them?
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 9", and push your changes.**
+
+---
+
+## Exercise 10
+
+Print out a summary of the data frame using the `skim()` function. How many pieces have artist info missing? How many have year info missing?
+```{r skim-data, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+skim(___)
+```
+
+**Your findings:**
+
+- Number of pieces with missing artist: _____
+- Number of pieces with missing year: _____
+
+**Why might this information be missing?**
+
+
+
+---
+
+## Exercise 11
+
+Make a histogram of years. Use a reasonable binwidth. Do you see anything out of the ordinary?
+```{r year-histogram, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = uoe_art, aes(x = ___)) +
+  geom_histogram(binwidth = ___) +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**Hint:** Try a binwidth of 10 or 20 years.
+
+**What looks out of the ordinary?**
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 10-11", and push your changes.**
+
+---
+
+## Exercise 12
+
+Find which piece has the out of the ordinary year and go to its page on the art collection website to find the correct year for it. Can you tell why our code didn't capture the correct year information? Correct the error in the data frame and visualize the data again.
+
+**Find the problematic observation:**
+```{r find-outlier, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+uoe_art %>%
+  filter(year < 1000 | year > 2030)  # Look for unreasonable years
+```
+
+**Visit the link for this piece and find the correct year:** 
+
+**Why didn't our code capture it correctly?**
+
+
+
+**Correct the error:**
+```{r fix-year, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+uoe_art <- uoe_art %>%
+  mutate(year = if_else(
+    ___ == "___",          # Condition: if title equals the problematic one
+    ___,                    # Then: set year to correct value
+    ___                     # Else: keep original year
+  ))
+```
+
+**Recreate the histogram to verify the fix:**
+```{r verify-fix, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+# Your histogram code from Exercise 11
+```
+
+---
+
+## Exercise 13
+
+Who is the most commonly featured artist in the collection? Do you know them? Any guess as to why the university has so many pieces from them?
+```{r most-common-artist, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+uoe_art %>%
+  count(___, sort = TRUE) %>%
+  head(10)
+```
+
+**Most common artist:** 
+
+**Number of pieces:** 
+
+**Do you know this artist?** 
+
+
+
+
+**Why might the university have so many of their pieces?**
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 12-13", and push your changes.**
+
+---
+
+## Exercise 14
+
+Final question! How many art pieces have the word "child" in their title? Make sure to capture both "child" and "Child".
+
+**Hint:** `str_detect()` can be helpful here. You can use `(?i)` in your pattern to make it case-insensitive, or use `str_to_lower()` first.
+```{r count-child, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+
+# Option 1: Case-insensitive search
+uoe_art %>%
+  filter(str_detect(___, "(?i)child")) %>%
+  nrow()
+
+# Option 2: Convert to lowercase first
+uoe_art %>%
+  filter(str_detect(str_to_lower(___), "___")) %>%
+  nrow()
+```
+
+**Number of pieces with "child" in the title:** _____
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 14", and push your changes.**
+
+---
+
+## Common Errors and Troubleshooting
+
+**Web scraping errors (from scripts):**
+
+- **Error: "could not find function"** → Make sure you loaded rvest: `library(rvest)`
+- **HTTP errors (403, 404, etc.)** → The website may be down or blocking requests
+- **Different number of elements** → Website structure may have changed since lab was written
+- **Function returns wrong number of rows** → Check that CSS selectors are correct
+
+**Data cleaning errors:**
+
+- **`separate()` warnings** → Expected! Some titles don't have parentheses
+- **Year extraction fails** → Check that pattern `\\d{4}` is correct
+- **NA values everywhere** → Make sure you saved the result back to `uoe_art` with `<-`
+
+**String manipulation errors:**
+
+- **Error with `\\(`** → Need double backslash to escape special characters
+- **`str_extract()` returns NA** → Pattern might not match; check your regex
+- **Case sensitivity issues** → Use `(?i)` for case-insensitive matching
+
+**Visualization errors:**
+
+- **Histogram looks weird** → Adjust binwidth or check for outliers
+- **Too many NA values** → Use `na.rm = TRUE` or filter them out first
+
+**General issues:**
+
+- **Can't find CSV file** → Make sure you ran all three scraping scripts and saved the data
+- **Code chunk not running** → Make sure you changed `eval=FALSE` to `eval=TRUE`
+- **Warnings about coercion** → Expected when converting text to numbers (some won't convert)
+
+---
+
+**Final check:** 
+- ✅ All three R scripts completed and committed
+- ✅ CSV file in data folder
+- ✅ All exercises in this .Rmd completed
+- ✅ Everything pushed to GitHub
+
+**Great work on completing this complex lab!**
+
+**To submit to Canvas:**
+
+Step 1.  In RStudio, click the **Knit** dropdown menu (next to the Knit button)
+
+Step 2.  Select **Knit to tufte_handout** to generate a PDF
+
+Step 3.  Download the PDF file from the Files pane
+
+Step 4.  Upload the PDF to Canvas
+
+**✓ Final Checkpoint:** Visit your GitHub repo one more time to confirm all your work is there. We will grade what we see in your repo on GitHub!

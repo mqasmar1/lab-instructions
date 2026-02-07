@@ -1,0 +1,407 @@
+---
+title: "Lab 11 - Grading the professor, Pt. 2"
+subtitle: "Modeling with multiple predictors"
+author: "Your Name"
+output: 
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+link-citations: yes
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Introduction
+
+In this lab we revisit the professor evaluations data we modeled in Lab 10. In the last lab we modeled evaluation scores using a single predictor at a time. This time we will use multiple predictors to model evaluation scores.
+
+**This lab builds directly on Lab 10.** Make sure you understand single predictor models before working with multiple predictors.
+
+For full context, review Lab 10's introduction before continuing.
+
+**Estimated time:** 60-90 minutes
+
+## Learning Goals
+
+By the end of this lab, you will be able to:
+
+-   Fit linear regression models with multiple predictors
+-   Interpret regression coefficients in multiple regression
+-   Compare simple and multiple regression models
+-   Understand adjusted R² and when to use it
+-   Interpret interaction effects between predictors
+-   Make predictions using multiple regression models
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+-   ✅ **Completed Lab 10** (this is essential!)
+-   ✅ Watched lectures on multiple regression
+-   ✅ Understand single predictor regression
+-   ✅ Understand the concepts of R² and adjusted R²
+-   ✅ Forked the lab-instructions repository
+
+------------------------------------------------------------------------
+
+# Getting Started
+
+Navigate to your forked `lab-instructions` repository in JupyterHub, open the `Lab11` folder, and open the R Markdown document `lab-11.Rmd`.
+
+## Verify Your Setup
+
+Before proceeding:
+
+Step 1. Open `lab-11.Rmd` in RStudio
+
+Step 2. Check that the Git pane shows YOUR username (not the course organization)
+
+Step 3. Click **Knit** to make sure the document compiles
+
+## Warm Up
+
+**Step 1:** Update the YAML, changing the author name to your name.
+
+**Step 2:** Knit the document.
+
+**Step 3:** Commit your changes with message "Updated author name".
+
+**Step 4:** Push to GitHub and verify the changes are visible in your repo.
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
+
+------------------------------------------------------------------------
+
+## Packages
+
+We'll use the **tidyverse** package for much of the data wrangling and visualization, the **tidymodels** package for modeling and inference, and the data lives in the **openintro** package. These packages are already installed for you. You can load them by running the following in your Console:
+
+```{r load-packages, eval = TRUE, message = FALSE}
+library(tidyverse) 
+library(tidymodels)
+library(openintro)
+```
+
+## Data
+
+The data can be found in the **openintro** package, and it's called `evals`. Since the dataset is distributed with the package, we don't need to load it separately; it becomes available to us when we load the package. You can find out more about the dataset by inspecting its documentation, which you can access by running `?evals` in the Console or using the Help menu in RStudio to search for `evals`. You can also find this information [here](https://www.openintro.org/data/index.php?data=evals).
+
+------------------------------------------------------------------------
+
+# Exercises
+
+## Exercise 1
+
+Load the data by including the appropriate code in your R Markdown file.
+
+**Note:** Since `evals` comes from the openintro package, it's automatically available when you load the package. However, it's good practice to verify the data loaded correctly.
+
+```{r load-data, eval = TRUE}
+# The data is already available, but let's verify it loaded
+glimpse(evals)
+```
+
+**How many observations are in the dataset?** Use inline code to report.
+
+**Your answer:** The dataset has \_\_\_\_\_ observations.
+
+**✓ Checkpoint:** You should see 463 observations and 23 variables.
+
+------------------------------------------------------------------------
+
+## Part 1: Simple Linear Regression (Review)
+
+## Exercise 2
+
+Fit a linear model (one you have fit in Lab 10): `score_bty_fit`, predicting average professor evaluation `score` based on average beauty rating (`bty_avg`) only. Write the linear model, and note the R² and the adjusted R².
+
+```{r fit-score-bty, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_bty_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ ___, data = evals)
+
+# View coefficients
+tidy(score_bty_fit)
+
+# View model statistics including R²
+glance(score_bty_fit)
+```
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
+
+**R² value:** \_\_\_\_\_
+
+**Adjusted R² value:** \_\_\_\_\_
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
+
+------------------------------------------------------------------------
+
+## Part 2: Multiple Linear Regression
+
+## Exercise 3
+
+Fit a linear model (one you have fit in Lab 10): `score_bty_gen_fit`, predicting average professor evaluation `score` based on average beauty rating (`bty_avg`) and `gender`. Write the linear model, and note the R² and the adjusted R².
+
+```{r fit-score-bty-gender, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_bty_gen_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ ___ + ___, data = evals)
+
+# View coefficients
+tidy(score_bty_gen_fit)
+
+# View model statistics
+glance(score_bty_gen_fit)
+```
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg + \_\_\_ \times gendermale$$
+
+**R² value:** \_\_\_\_\_
+
+**Adjusted R² value:** \_\_\_\_\_
+
+------------------------------------------------------------------------
+
+## Exercise 4
+
+Interpret the slopes and intercept of `score_bty_gen_fit` in context of the data.
+
+**Interpret the intercept:**
+
+The intercept represents
+
+**Interpret the slope for bty_avg:**
+
+Holding gender constant, for every one unit increase in beauty rating, \_\_\_\_\_\_\_
+
+**Interpret the slope for gendermale:**
+
+Holding beauty rating constant, male professors are expected to score \_\_\_\_\_\_\_\_
+
+**Important:** In multiple regression, we interpret each coefficient "holding all other variables constant."
+
+------------------------------------------------------------------------
+
+## Exercise 5
+
+What percent of the variability in `score` is explained by the model `score_bty_gen_fit`?
+
+**Use the R² value from Exercise 3.**
+
+Approximately \_\_\_\_\_% of the variability in professor evaluation scores is explained by beauty rating and gender.
+
+------------------------------------------------------------------------
+
+## Exercise 6
+
+What is the equation of the line corresponding to *just* male professors?
+
+**Hint:** For male professors, gendermale = 1.
+
+**Starting with:** $\widehat{score} = b_0 + b_1 \times bty\_avg + b_2 \times gendermale$
+
+**For males (gendermale = 1):**
+
+$$\widehat{score} = b_0 + b_1 \times bty\_avg + b_2 \times 1$$
+
+**Simplified:**
+
+$$\widehat{score} = (b_0 + b_2) + b_1 \times bty\_avg$$
+
+**With your actual values:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 3-6", and push your changes.**
+
+------------------------------------------------------------------------
+
+## Exercise 7
+
+For two professors who received the same beauty rating, which gender tends to have the higher course evaluation score?
+
+**Look at the coefficient for gendermale.** Is it positive or negative?
+
+**Your answer:**
+
+If the coefficient is positive: Male professors tend to have higher scores. If the coefficient is negative: Female professors tend to have higher scores.
+
+**The coefficient is:** \_\_\_\_\_ (positive/negative)
+
+**Therefore:**
+
+**By how much?** \_\_\_\_\_
+
+------------------------------------------------------------------------
+
+## Exercise 8
+
+How does the relationship between beauty and evaluation score vary between male and female professors?
+
+**Look at the coefficient for bty_avg in the multiple regression model.**
+
+**Your answer:**
+
+The relationship between beauty and evaluation score \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ (does / does not) vary between male and female professors because \_\_\_\_\_\_\_\_\_\_
+
+**Hint:** In this model, both genders have the same slope for bty_avg. The lines are parallel!
+
+------------------------------------------------------------------------
+
+## Exercise 9
+
+How do the adjusted R² values of `score_bty_gen_fit` and `score_bty_fit` compare? What does this tell us about how useful `gender` is in explaining the variability in evaluation scores when we already have information on the beauty score of the professor?
+
+**Compare the adjusted R² values:**
+
+**score_bty_fit adjusted R²:** \_\_\_\_\_ (from Exercise 2)
+
+**score_bty_gen_fit adjusted R²:** \_\_\_\_\_ (from Exercise 3)
+
+**Difference:** \_\_\_\_\_
+
+**Interpretation:**
+
+The adjusted R² increased/decreased by \_\_\_\_\_ when we added gender to the model. This tells us that gender \_\_\_\_\_\_
+
+**Note:** Adjusted R² accounts for the number of predictors, so it's better for comparing models with different numbers of predictors.
+
+------------------------------------------------------------------------
+
+## Exercise 10
+
+Compare the slopes of `bty_avg` under the two models (`score_bty_fit` and `score_bty_gen_fit`). Has the addition of `gender` to the model changed the parameter estimate (slope) for `bty_avg`?
+
+**Slope of bty_avg in score_bty_fit:** \_\_\_\_\_ (from Exercise 2)
+
+**Slope of bty_avg in score_bty_gen_fit:** \_\_\_\_\_ (from Exercise 3)
+
+**Has it changed?**
+
+The slope has changed/not changed. The difference is \_\_\_\_\_.
+
+**Why might this happen?**
+
+**Hint:** If beauty and gender are related (e.g., if male and female professors have different average beauty ratings), adding gender can change the bty_avg coefficient.
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 7-10", and push your changes.**
+
+------------------------------------------------------------------------
+
+## Exercise 11
+
+Create a new model called `score_bty_rank_fit` with `gender` removed and `rank` added in. Write the equation of the linear model and interpret the slopes and intercept in context of the data.
+
+```{r fit-score-bty-rank, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_bty_rank_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ ___ + ___, data = evals)
+
+# View coefficients
+tidy(score_bty_rank_fit)
+
+# View model statistics
+glance(score_bty_rank_fit)
+```
+
+**Note:** `rank` has three levels: teaching (reference), tenure track, and tenured.
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg + \_\_\_ \times ranktenuretrack + \_\_\_ \times ranktenured$$
+
+**Interpret the intercept:**
+
+For teaching faculty with a beauty rating of 0, the expected evaluation score is \_\_\_\_\_.
+
+**Interpret the slope for bty_avg:**
+
+Holding rank constant, for every one unit increase in beauty rating, \_\_\_\_\_\_\_\_
+
+**Interpret the slope for ranktenuretrack:**
+
+Holding beauty rating constant, tenure track faculty are expected to score \_\_\_\_
+
+**Interpret the slope for ranktenured:**
+
+Holding beauty rating constant, tenured faculty are expected to score \_\_\_\_\_\_\_\_
+
+**Adjusted R² for this model:** \_\_\_\_\_
+
+**How does this compare to score_bty_gen_fit?**
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 11", and push your changes.**
+
+------------------------------------------------------------------------
+
+## Common Errors and Troubleshooting
+
+**Multiple regression errors:**
+
+-   **Coefficients look wrong** → Check that you included the `+` between predictors
+-   **Can't interpret "holding other variables constant"** → This means we compare observations that have the same value for other predictors
+-   **Confused about which R² to use** → Use adjusted R² when comparing models with different numbers of predictors
+
+**Model comparison errors:**
+
+-   **Can't see difference in R²** → Look at more decimal places in `glance()` output
+-   **Slopes changed a lot** → This can happen if predictors are correlated
+-   **Not sure which model is better** → Higher adjusted R² generally means better, but also consider context and interpretability
+
+**Interpretation errors:**
+
+-   **Forgot "holding other variables constant"** → This is crucial in multiple regression!
+-   **Confused about categorical variables** → Remember the reference level; coefficients are relative to that
+-   **Intercept doesn't make sense** → That's okay if it represents values outside the data range (like beauty = 0)
+
+**General issues:**
+
+-   **Code chunk not running** → Make sure you changed `eval=FALSE` to `eval=TRUE`
+-   **Can't remember coefficients** → Run `tidy(model_name)` again
+-   **Need more decimal places** → Use `tidy(model_name) %>% print(n = Inf, width = Inf)`
+
+------------------------------------------------------------------------
+
+## Reflection
+
+**Key differences between simple and multiple regression:**
+
+-   **Simple regression:** One predictor, one slope to interpret
+-   **Multiple regression:** Multiple predictors, interpret each "holding others constant"
+-   **R² vs. Adjusted R²:** Adjusted R² penalizes adding unnecessary predictors
+
+**Important concepts:**
+
+-   Coefficients in multiple regression show the effect of one predictor while controlling for others
+-   Adding predictors can change existing coefficients if predictors are correlated
+-   Adjusted R² is better for model comparison than regular R²
+-   Higher adjusted R² doesn't always mean a "better" model - consider interpretability and context
+
+------------------------------------------------------------------------
+
+**To submit to Canvas:**
+
+Step 1. In RStudio, click the **Knit** dropdown menu (next to the Knit button)
+
+Step 2. Select **Knit to tufte_handout** to generate a PDF
+
+Step 3. Download the PDF file from the Files pane
+
+Step 4. Upload the PDF to Canvas
+
+**✓ Final Checkpoint:** Visit your GitHub repo one more time to confirm all your work is there. We will grade what we see in your repo on GitHub!

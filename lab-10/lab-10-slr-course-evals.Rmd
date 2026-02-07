@@ -1,0 +1,577 @@
+---
+title: "Lab 10 - Grading the professor, Pt. 1"
+subtitle: "Modeling with a single predictor"
+author: "Your Name"
+output: 
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+link-citations: yes
+---
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Introduction
+
+Many college courses conclude by giving students the opportunity to evaluate the course and the instructor anonymously. However, the use of these student evaluations as an indicator of course quality and teaching effectiveness is often criticized because these measures may reflect the influence of non-teaching related characteristics, such as the physical appearance of the instructor. 
+
+The article titled, "Beauty in the classroom: instructors' pulchritude and putative pedagogical productivity" (Hamermesh and Parker, 2005) found that instructors who are viewed to be better looking receive higher instructional ratings. In this lab you will analyze the data from this study in order to learn what goes into a positive professor evaluation.
+
+The data were gathered from end of semester student evaluations for a large sample of professors from the University of Texas at Austin. In addition, six students rated the professors' physical appearance. The result is a data frame where each row contains a different course and columns represent variables about the courses and professors.
+
+**Estimated time:** 90-120 minutes
+
+## Learning Goals
+
+By the end of this lab, you will be able to:
+
+- Fit linear regression models with single numerical predictors
+- Fit linear regression models with categorical predictors
+- Interpret regression coefficients (slopes and intercepts) in context
+- Calculate and interpret R-squared values
+- Visualize regression lines on scatterplots
+- Create and relevel categorical variables
+- Compare models with different predictors
+- Understand how reference levels affect interpretation
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- ✅ Completed Labs 01-09
+- ✅ Watched lectures on linear regression and modeling
+- ✅ Understand correlation and relationships between variables
+- ✅ Forked the lab-instructions repository
+
+---
+
+# Getting Started
+
+Navigate to your forked `lab-instructions` repository in JupyterHub, open the `Lab10` folder, and open the R Markdown document `lab-10.Rmd`.
+
+## Verify Your Setup
+
+Before proceeding:
+
+Step 1. Open `lab-10.Rmd` in RStudio
+
+Step 2. Check that the Git pane shows YOUR username (not the course organization)
+
+Step 3. Click **Knit** to make sure the document compiles
+
+## Warm Up
+
+**Step 1:** Update the YAML, changing the author name to your name.
+
+**Step 2:** Knit the document.
+
+**Step 3:** Commit your changes with message "Updated author name".
+
+**Step 4:** Push to GitHub and verify the changes are visible in your repo.
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
+
+---
+
+## Packages
+
+We'll use the **tidyverse** package for much of the data wrangling and visualisation, the **tidymodels** package for modeling and inference, and the data lives in the **openintro** package. These packages are already installed for you. You can load them by running the following in your Console:
+```{r load-packages, eval = TRUE, message = FALSE}
+library(tidyverse) 
+library(tidymodels)
+library(openintro)
+```
+
+## Data
+
+The data can be found in the **openintro** package, and it's called `evals`. Since the dataset is distributed with the package, we don't need to load it separately; it becomes available to us when we load the package. You can find out more about the dataset by inspecting its documentation, which you can access by running `?evals` in the Console or using the Help menu in RStudio to search for `evals`. You can also find this information [here](https://www.openintro.org/data/index.php?data=evals).
+
+**✓ Checkpoint:** Run `glimpse(evals)` in your Console to verify the data loaded correctly.
+
+---
+
+# Exercises
+
+## Part 1: Exploratory Data Analysis
+
+## Exercise 1
+
+Visualize the distribution of `score`. Is the distribution skewed? What does that tell you about how students rate courses? Is this what you expected to see? Why, or why not? Include any summary statistics and visualizations you use in your response.
+
+**Create a histogram:**
+```{r score-histogram, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = evals, aes(x = ___)) +
+  geom_histogram(binwidth = ___) +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**Hint:** Try binwidths like 0.25 or 0.5 for scores.
+
+**Calculate summary statistics:**
+```{r score-summary, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+evals %>%
+  summarise(
+    min = min(___),
+    q1 = quantile(___, 0.25),
+    median = median(___),
+    mean = mean(___),
+    q3 = quantile(___, 0.75),
+    max = max(___),
+    sd = sd(___)
+  )
+```
+
+**Describe the distribution:**
+
+**Shape (skewed left, skewed right, or symmetric?):** 
+
+
+
+**What does this tell you about how students rate courses?**
+
+
+
+**Is this what you expected? Why or why not?**
+
+
+
+---
+
+## Exercise 2
+
+Visualize and describe the relationship between `score` and `bty_avg`.
+```{r score-bty-scatter, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = evals, aes(x = ___, y = ___)) +
+  geom_point() +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**Describe the relationship:**
+
+**Direction (positive, negative, or no relationship):** ___________________
+
+**Strength (weak, moderate, or strong):** _____________________________
+
+**Form (linear, curved, or no pattern):** _____________________________
+
+**Are there any outliers?** ___________________________________________
+
+---
+
+## Exercise 3
+
+Recreate the scatterplot from Exercise 2, but this time use `geom_jitter()`. What does "jitter" mean? What was misleading about the initial scatterplot?
+```{marginfigure}
+**Hint:** See the help page for the function at http://ggplot2.tidyverse.org/reference/index.html.
+```
+```{r score-bty-jitter, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = evals, aes(x = bty_avg, y = score)) +
+  geom_jitter() +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**What does "jitter" mean?**
+
+
+
+**What was misleading about the initial scatterplot?**
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-3", and push your changes.**
+
+---
+
+## Part 2: Linear Regression with a Numerical Predictor
+```{marginfigure}
+Linear model is in the form $\hat{y} = b_0 + b_1 x$.
+```
+
+## Exercise 4
+
+Let's see if the apparent trend in the plot is something more than natural variation. Fit a linear model called `score_bty_fit` to predict average professor evaluation `score` by average beauty rating (`bty_avg`). Based on the regression output, write the linear model.
+
+**Fit the model:**
+```{r fit-score-bty, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_bty_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(___ ~ ___, data = evals)
+
+# View the results
+tidy(score_bty_fit)
+```
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
+
+**Hint:** The intercept is the estimate for `(Intercept)` and the slope is the estimate for `bty_avg`.
+
+---
+
+## Exercise 5
+
+Recreate the scatterplot from Exercise 2, and add the regression line to this plot in orange color, with shading for the uncertainty of the line turned off.
+```{r scatter-with-line, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = evals, aes(x = ___, y = ___)) +
+  geom_point() +
+  geom_smooth(method = "___", se = ___, color = "___") +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**Hints:**
+
+- `method = "lm"` for linear model
+- `se = FALSE` to turn off shading
+- `color = "orange"` for orange line
+
+---
+
+## Exercise 6
+
+Interpret the slope of the linear model in context of the data.
+
+**The slope is:** _____ (get this from the tidy output)
+
+**Interpretation in context:**
+
+For every 
+
+
+**Template:** "For every one unit increase in [x variable], we expect [y variable] to [increase/decrease] by [slope value] units, on average."
+
+---
+
+## Exercise 7
+
+Interpret the intercept of the linear model in context of the data. Comment on whether or not the intercept makes sense in this context.
+
+**The intercept is:** _____ (get this from the tidy output)
+
+**Interpretation in context:**
+
+When 
+
+**Does this make sense in context? Why or why not?**
+
+
+
+**Hint:** Think about what a beauty rating of 0 means and whether it's realistic.
+
+---
+
+## Exercise 8
+
+Determine the R² of the model and interpret it in context of the data.
+
+**Calculate R²:**
+```{r rsquared-bty, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+glance(score_bty_fit)
+```
+
+**The R² value is:** _____ (look for `r.squared` in the output)
+
+**Interpretation in context:**
+
+Approximately _____% of the variability in _______________
+is explained by 
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 4-8", and push your changes.**
+
+---
+
+## Part 3: Linear Regression with a Categorical Predictor
+
+## Exercise 9
+
+Fit a new linear model called `score_gender_fit` to predict average professor evaluation `score` based on `gender` of the professor. Based on the regression output, write the linear model and interpret the slope and intercept in context of the data.
+
+**Fit the model:**
+```{r fit-score-gender, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_gender_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(___ ~ ___, data = evals)
+
+tidy(score_gender_fit)
+```
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times gendermale$$
+
+**Note:** R uses the first category alphabetically as the reference (baseline) level. So "female" is the reference here.
+
+**Interpret the intercept:**
+
+
+
+**Interpret the slope:**
+
+
+
+---
+
+## Exercise 10
+
+What is the equation of the line corresponding to male professors? What is it for female professors?
+
+**For male professors (where gender = male, so gendermale = 1):**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times 1 = \_\_\_$$
+
+**For female professors (where gender = female, so gendermale = 0):**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times 0 = \_\_\_$$
+
+**What does this tell you about the difference in average scores?**
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 9-10", and push your changes.**
+
+---
+
+## Exercise 11
+
+Fit a new linear model called `score_rank_fit` to predict average professor evaluation `score` based on `rank` of the professor. Based on the regression output, write the linear model and interpret the slopes and intercept in context of the data.
+
+**Fit the model:**
+```{r fit-score-rank, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_rank_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ ___, data = evals)
+
+tidy(score_rank_fit)
+```
+
+**Note:** `rank` has three categories: teaching, tenure track, and tenured. R will use the first alphabetically as reference.
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times ranktenuretrack + \_\_\_ \times ranktenured$$
+
+**Interpret the intercept (for teaching faculty):**
+
+
+
+**Interpret the slope for ranktenuretrack:**
+
+
+
+**Interpret the slope for ranktenured:**
+
+
+
+---
+
+## Exercise 12
+
+Create a new variable called `rank_relevel` where "tenure track" is the baseline level.
+```{r create-rank-relevel, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+evals <- evals %>%
+  mutate(rank_relevel = fct_relevel(rank, "___"))
+```
+
+**What this does:**
+
+- `fct_relevel()` changes which category is the reference level
+- Put "tenure track" as the first argument to make it the baseline
+
+**Verify it worked:**
+```{r check-levels, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+levels(evals$rank_relevel)
+```
+
+The first level shown should be "tenure track".
+
+---
+
+## Exercise 13
+
+Fit a new linear model called `score_rank_relevel_fit` to predict average professor evaluation `score` based on `rank_relevel` of the professor. This is the new (releveled) variable you created in Exercise 12. Based on the regression output, write the linear model and interpret the slopes and intercept in context of the data. Also determine and interpret the R² of the model.
+
+**Fit the model:**
+```{r fit-score-rank-relevel, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_rank_relevel_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ ___, data = evals)
+
+tidy(score_rank_relevel_fit)
+glance(score_rank_relevel_fit)
+```
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times rankreleveltea ching + \_\_\_ \times rankreleveltenured$$
+
+**Interpret the intercept (now for tenure track faculty):**
+
+
+
+
+**Interpret the slopes:**
+
+
+
+
+**R² value:** _____
+
+**Interpretation of R²:**
+
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 11-13", and push your changes.**
+
+---
+
+## Exercise 14
+
+Create another new variable called `tenure_eligible` that labels "teaching" faculty as "no" and labels "tenure track" and "tenured" faculty as "yes".
+```{r create-tenure-eligible, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+evals <- evals %>%
+  mutate(tenure_eligible = if_else(
+    rank == "___", 
+    "___", 
+    "___"
+  ))
+```
+
+**Hints:**
+- If rank equals "teaching", set to "no"
+- Otherwise, set to "yes"
+
+**Verify it worked:**
+```{r check-tenure-eligible, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+evals %>%
+  count(rank, tenure_eligible)
+```
+
+You should see teaching faculty labeled as "no" and the other two as "yes".
+
+---
+
+## Exercise 15
+
+Fit a new linear model called `score_tenure_eligible_fit` to predict average professor evaluation `score` based on `tenure_eligible`ness of the professor. This is the new (regrouped) variable you created in the previous exercise. Based on the regression output, write the linear model and interpret the slopes and intercept in context of the data. Also determine and interpret the R² of the model.
+
+**Fit the model:**
+```{r fit-score-tenure, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+score_tenure_eligible_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(score ~ ___, data = evals)
+
+tidy(score_tenure_eligible_fit)
+glance(score_tenure_eligible_fit)
+```
+
+**Write the linear model equation:**
+
+$$\widehat{score} = \_\_\_ + \_\_\_ \times tenureeligibleyes$$
+
+**Interpret the intercept:**
+
+
+
+
+**Interpret the slope:**
+
+
+
+
+**R² value:** _____
+
+**Interpretation of R²:**
+
+
+
+
+**How does this R² compare to the R² from Exercise 13? What does this tell you?**
+
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 14-15", and push your changes.**
+
+---
+
+## Common Errors and Troubleshooting
+
+**Modeling errors:**
+
+- **Error: "could not find function 'linear_reg'"** → Load tidymodels: `library(tidymodels)`
+- **Error: "object not found"** → Make sure you created and saved the new variables with `<-`
+- **Model output shows NA** → Check that variables exist and have valid data
+
+**Interpretation errors:**
+
+- **Confused about reference levels** → Run `levels(evals$variable)` to see which is first (reference)
+- **Intercept doesn't make sense** → That's okay! Not all intercepts are meaningful
+- **Negative R²** → This shouldn't happen; check your model specification
+
+**Variable creation errors:**
+
+- **`fct_relevel()` not working** → Make sure the variable is a factor first
+- **`if_else()` creating NAs** → Check your condition logic
+- **Can't find new variable** → Make sure you saved it back to `evals` with `<-`
+
+**Visualization errors:**
+
+- **Regression line not showing** → Make sure `method = "lm"` in `geom_smooth()`
+- **Points overlap** → Use `geom_jitter()` instead of `geom_point()`
+
+**General issues:**
+
+- **Code chunk not running** → Make sure you changed `eval=FALSE` to `eval=TRUE`
+- **Can't interpret coefficient** → Remember context: what do units mean?
+
+---
+
+**To submit to Canvas:**
+
+Step 1.  In RStudio, click the **Knit** dropdown menu (next to the Knit button)
+
+Step 2.  Select **Knit to tufte_handout** to generate a PDF
+
+Step 3.  Download the PDF file from the Files pane
+
+Step 4.  Upload the PDF to Canvas
+
+**✓ Final Checkpoint:** Visit your GitHub repo one more time to confirm all your work is there. We will grade what we see in your repo on GitHub!

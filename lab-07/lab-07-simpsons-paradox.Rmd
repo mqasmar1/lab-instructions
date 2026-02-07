@@ -1,0 +1,452 @@
+---
+title: "Lab 07 - Smokers in Whickham"
+author: "[Your Name]"
+subtitle: "Simpson's paradox"
+output: 
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+    citation_package: natbib
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+link-citations: true
+---
+## Introduction
+
+A study conducted in Whickham, England recorded participants' age, smoking status at baseline, and then 20 years later recorded their health outcome. In this lab we analyze the relationships between these variables, first two at a time, and then controlling for a third variable.
+
+**You might be surprised by what you find!** This lab demonstrates an important statistical phenomenon called **Simpson's paradox**, where a trend that appears in different groups of data disappears or reverses when the groups are combined. Understanding this paradox is crucial for correctly interpreting data and avoiding misleading conclusions.
+
+**Estimated time:** 60-90 minutes
+
+## Learning Goals
+
+By the end of this lab, you will be able to:
+
+- Distinguish between observational studies and experiments
+- Visualize relationships between categorical variables
+- Calculate and interpret conditional probabilities
+- Create categorical variables from continuous variables using `case_when()`
+- Use faceting to explore three-way relationships
+- Identify and explain Simpson's paradox
+- Understand the role of confounding variables
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- ✅ Completed Labs 01-06
+- ✅ Watched lectures on categorical data and conditional probability
+- ✅ Understand bar plots and mosaic plots
+- ✅ Forked the lab-instructions repository
+
+---
+
+# Getting Started
+
+Navigate to your forked `lab-instructions` repository in JupyterHub, open the `Lab07` folder, and open the R Markdown document `lab-07.Rmd`.
+
+## Verify Your Setup
+
+Before proceeding:
+
+Step 1. Open `lab-07.Rmd` in RStudio
+
+Step 2. Check that the Git pane shows YOUR username (not the course organization)
+
+Step 3. Click **Knit** to make sure the document compiles
+
+## Warm Up
+
+Before we introduce the data, let's warm up with some simple exercises.
+
+**Step 1:** Update the YAML, changing the author name to your name.
+
+**Step 2:** Knit the document.
+
+**Step 3:** Commit your changes with message "Updated author name".
+
+**Step 4:** Push to GitHub and verify the changes are visible in your repo.
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
+
+---
+
+## Packages
+
+We'll use the **tidyverse** package for much of the data wrangling and visualisation and the data lives in the **mosaicData** package. These packages are already installed for you. You can load them by running the following in your Console:
+```{r load-packages, eval = TRUE, message = FALSE}
+library(tidyverse) 
+library(mosaicData) 
+```
+
+## Data
+
+The dataset we'll use is called `Whickham` from the **mosaicData** package. You can find out more about the dataset by inspecting its documentation, which you can access by running `?Whickham` in the Console or using the Help menu in RStudio to search for `Whickham`.
+
+**✓ Checkpoint:** Run `glimpse(Whickham)` in your Console to verify the data loaded correctly.
+
+---
+
+# Exercises
+
+## Understanding the Study
+
+## Exercise 1
+
+What type of study do you think these data come from: observational or experiment? Why?
+
+**Definitions to help you decide:**
+
+- **Observational study:** Researchers observe and measure variables but don't intervene or assign treatments
+- **Experiment:** Researchers actively assign treatments/interventions to participants
+
+**Your answer:** 
+
+This is an __________ study because 
+
+---
+
+## Exercise 2
+
+How many observations are in this dataset? What does each observation represent?
+
+**Hint:** Use inline code with `nrow()` to report the number of observations.
+
+**Your answer:** 
+
+The dataset has _____ observations. Each observation represents 
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
+
+---
+
+## Exploring the Variables
+
+## Exercise 3
+
+How many variables are in this dataset? What type of variable is each? Display each variable using an appropriate visualization.
+
+**Part A: Count and classify the variables**
+
+Run `glimpse(Whickham)` in your Console to see the variables.
+
+**Number of variables:** _____
+
+**Variable types:**
+
+| Variable | Type (categorical/numerical) | More specific type |
+|:---------|:----------------------------|:-------------------|
+| outcome  |                             |                    |
+| smoker   |                             |                    |
+| age      |                             |                    |
+
+**Part B: Create visualizations**
+
+Create appropriate visualizations for each variable.
+
+**For categorical variables (outcome and smoker):**
+```{r visualize-categorical, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+
+# Outcome variable
+ggplot(data = Whickham, aes(x = ___)) +
+  geom_bar() +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+
+# Smoker variable
+ggplot(data = Whickham, aes(x = ___)) +
+  geom_bar() +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**For numerical variable (age):**
+```{r visualize-age, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = Whickham, aes(x = ___)) +
+  geom_histogram(binwidth = ___) +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___"
+  )
+```
+
+**Hint:** Try a binwidth of 5 or 10 for age.
+
+---
+
+## Making Predictions
+
+## Exercise 4
+
+What would you expect the relationship between smoking status and health outcome to be?
+
+**Think about it:** If we compare smokers to non-smokers after 20 years, what difference would you expect to see in their health outcomes?
+
+**Your prediction:**
+
+I would expect that smokers would have 
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 3-4", and push your changes.**
+
+---
+
+## Examining the Relationship
+
+## Exercise 5
+
+Create a visualization depicting the relationship between smoking status and health outcome. Briefly describe the relationship, and evaluate whether this meets your expectations. Additionally, calculate the relevant conditional probabilities to help your narrative.
+
+**Part A: Create a visualization**
+```{r smoker-outcome-viz, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = Whickham, aes(x = ___, fill = ___)) +
+  geom_bar(position = "___") +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___",
+    fill = "___"
+  )
+```
+
+**Hints:**
+
+- Put `smoker` on the x-axis and fill by `outcome`
+- Try `position = "fill"` to show proportions, or `position = "dodge"` to show counts side-by-side
+
+**Part B: Calculate counts**
+
+Here is some code to get you started:
+```{r count-smoker-outcome, eval = TRUE}
+Whickham %>%
+  count(smoker, outcome)
+```
+
+**What this shows:** The number of people in each combination of smoking status and outcome.
+
+**Part C: Calculate conditional probabilities**
+
+Calculate the probability of being alive given smoking status.
+```{r conditional-probs, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+Whickham %>%
+  count(smoker, outcome) %>%
+  group_by(___) %>%
+  mutate(proportion = n / sum(___))
+```
+
+**Interpret the results:**
+
+- Proportion of smokers who are alive after 20 years: _____
+- Proportion of non-smokers who are alive after 20 years: _____
+
+**Does this meet your expectations? What do you notice?**
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 5", and push your changes.**
+
+---
+
+## Adding a Third Variable
+
+## Exercise 6
+
+Create a new variable called `age_cat` using the following scheme:
+
+- age ≤ 44 → "18-44"
+- age > 44 and age ≤ 64 → "45-64"
+- age > 64 → "65+"
+
+**Use `case_when()` to create the categorical variable:**
+```{r create-age-cat, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+Whickham %
+  mutate(age_cat = case_when(
+    age <= ___ ~ "18-44",
+    age > ___ & age <= ___ ~ "45-64",
+    age > ___ ~ "65+"
+  ))
+```
+
+**What this code does:**
+
+- Takes the `Whickham` dataset
+- Uses `mutate()` to create a new variable called `age_cat`
+- `case_when()` checks each condition in order and assigns the corresponding category
+- Saves the result back to `Whickham` using `<-`
+
+**Verify it worked:**
+```{r verify-age-cat, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+Whickham %>%
+  count(age_cat)
+```
+
+**How many people are in each age category?**
+
+- 18-44: _____
+- 45-64: _____
+- 65+: _____
+
+---
+
+## The Big Reveal: Simpson's Paradox
+
+## Exercise 7
+
+Re-create the visualization depicting the relationship between smoking status and health outcome, faceted by `age_cat`. What changed? What might explain this change? 
+
+**Part A: Create the faceted visualization**
+```{r faceted-viz, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+ggplot(data = Whickham, aes(x = ___, fill = ___)) +
+  geom_bar(position = "___") +
+  facet_wrap(~___) +
+  labs(
+    title = "___",
+    x = "___",
+    y = "___",
+    fill = "___"
+  )
+```
+
+**Hint:** Use the same aesthetics as Exercise 5, but add `facet_wrap(~age_cat)`
+
+**Part B: Examine the three-way contingency table**
+
+Extend the contingency table from earlier by breaking it down by age category:
+```{r three-way-table, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+Whickham %>%
+  count(smoker, age_cat, outcome)
+```
+
+**Calculate proportions within each age group:**
+```{r age-conditional-probs, eval = FALSE}
+# Remember to change eval=FALSE to eval=TRUE!
+Whickham %>%
+  count(smoker, age_cat, outcome) %>%
+  group_by(___, ___) %>%
+  mutate(proportion = n / sum(n))
+```
+
+**Part C: Interpret the results**
+
+**What changed when you added age_cat?**
+
+
+
+**Compare the relationship between smoking and outcome:**
+
+**Overall (from Exercise 5):** Smokers appeared to have _____________________ survival
+
+**Within each age group (from Exercise 7):** Smokers appear to have 
+
+**What might explain this change?**
+
+Consider:
+
+- Which age groups have more smokers?
+- Which age groups have higher survival rates overall?
+- How might age affect both smoking status and survival?
+
+**Your explanation:**
+
+
+
+🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 6-7", and push your changes.**
+
+---
+
+## Understanding Simpson's Paradox
+
+**What you just discovered is called Simpson's Paradox!**
+```{marginfigure}
+Simpson's paradox was first described by Edward Simpson in 1951, though similar observations were made earlier by others.
+```
+
+**Simpson's Paradox** occurs when a trend appears in several groups of data but disappears or reverses when the groups are combined. In this case:
+
+- **Overall:** Smokers appeared to have *better* survival than non-smokers
+- **Within each age group:** Smokers had *worse* survival than non-smokers
+
+**Why did this happen?**
+
+The key is that **age is a confounding variable**:
+
+ - **Age affects survival:** Younger people are more likely to survive 20 years than older people (regardless of smoking status)
+ - **Age affects smoking status:** In this study, smokers were younger on average than non-smokers
+ - **The age difference masks the true effect of smoking:** The overall comparison was unfair because it compared a younger group of smokers to an older group of non-smokers
+
+**The lesson:** When exploring relationships between variables, it's crucial to consider potential confounding variables. What appears to be true overall may not be true when you look within subgroups, and vice versa.
+
+**Real-world implications:**
+
+- Medical studies must control for confounding variables like age, sex, and health status
+- Policy decisions based on aggregated data can be misleading if important subgroups differ
+- Always ask: "What other variables might be affecting this relationship?"
+
+---
+
+**Reflection question:** Can you think of other situations where Simpson's paradox might occur? What confounding variables should researchers watch out for in studies about health, education, or economics?
+
+---
+
+## Common Errors and Troubleshooting
+
+**Visualization errors:**
+
+- **Bar plot shows counts instead of proportions** → Use `position = "fill"` in `geom_bar()`
+- **Can't see both outcome categories** → Make sure `fill = outcome` is inside `aes()`
+- **Facets not appearing** → Check spelling of `age_cat` in `facet_wrap()`
+- **Error: "object 'age_cat' not found"** → Make sure you ran Exercise 6 and saved the result back to `Whickham`
+
+**case_when() errors:**
+
+- **Some ages showing as NA** → Make sure your conditions cover all possible ages (use `TRUE ~ "Other"` as a catch-all if needed)
+- **Categories in wrong order** → `case_when()` evaluates in order, so put more specific conditions first
+- **Error: "could not find function 'case_when'"** → Load tidyverse: `library(tidyverse)`
+
+**Conditional probability errors:**
+
+- **Proportions don't add up to 1** → Make sure you're grouping by the right variable(s)
+- **Getting counts instead of proportions** → Divide n by sum(n): `mutate(proportion = n / sum(n))`
+- **Proportions sum to wrong value** → Check your `group_by()` - you want proportions within each smoking group
+
+**Data errors:**
+
+- **Error: "object 'Whickham' not found"** → Load the mosaicData package: `library(mosaicData)`
+- **Changes not saving** → Remember to use `<-` to save mutated data back to `Whickham`
+
+**General issues:**
+
+- **Code chunk not running** → Make sure you changed `eval=FALSE` to `eval=TRUE`
+- **Inline code not working** → Use inline code syntax in narrative text (not in code chunks)
+
+---
+
+**To submit to Canvas:**
+
+Step 1.  In RStudio, click the **Knit** dropdown menu (next to the Knit button)
+
+Step 2.  Select **Knit to tufte_handout** to generate a PDF
+
+Step 3.  Download the PDF file from the Files pane
+
+Step 4.  Upload the PDF to Canvas
+
+**✓ Final Checkpoint:** Visit your GitHub repo one more time to confirm all your work is there. We will grade what we see in your repo on GitHub!
