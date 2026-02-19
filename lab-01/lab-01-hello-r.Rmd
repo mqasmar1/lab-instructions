@@ -11,7 +11,7 @@ output:
     highlight: pygments
     keep_tex: true
     citation_package: natbib
-link-citations: true
+    link-citations: true
 ---
 
 ```{marginfigure}
@@ -207,7 +207,7 @@ Next, we need to visualize these data. We will use the `ggplot` function for thi
 
 Here is the graph of x and y for the "dino" dataset.
 
-```{r fig.fullwidth=TRUE}
+```{r fig.fullwidth=TRUE, fig.height=5, fig.width=6}
 ggplot(data = dino_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
@@ -242,7 +242,7 @@ star_data <- datasaurus_dozen %>%
 ```
 
 **Step 2: Create the plot**
-```{r fig.fullwidth=TRUE}
+```{r fig.fullwidth=TRUE, fig.height=5, fig.width=6}
 ggplot(data = star_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
@@ -266,7 +266,7 @@ star_data %>%
 **Your task:** Adapt the code from Exercises 2 and 3, changing the dataset to `"circle"`.
 
 **Filter, plot, and calculate correlation:**
-```{r}
+```{r fig.height=5, fig.width=6}
 circle_data <- datasaurus_dozen %>%
   filter(dataset == "circle")
 ```
@@ -297,7 +297,7 @@ Facet by the dataset variable, placing the plots in a 3 column grid, and don't a
 
 5.  Finally, let's plot all datasets at once. In order to do this we will make use of faceting.
 
-```{r all-viz, eval=FALSE, fig.fullwidth=TRUE}
+```{r all-viz, fig.fullwidth=TRUE, fig.height=5, fig.width=6}
 ggplot(datasaurus_dozen, aes(x = x, y = y, color = dataset))+
   geom_point()+
   facet_wrap(~ dataset, ncol = 3) +
@@ -306,7 +306,7 @@ ggplot(datasaurus_dozen, aes(x = x, y = y, color = dataset))+
 
 And we can use the `group_by` function to generate all the summary correlation coefficients.
 
-```{r all-r, eval=FALSE}
+```{r all-r}
 datasaurus_dozen %>%
   group_by(dataset) %>%
   summarize(r = cor(x, y)) %>%
