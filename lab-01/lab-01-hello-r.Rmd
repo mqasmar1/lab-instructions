@@ -236,28 +236,28 @@ The correlation coefficient between x and y is -0.0645.
 **Your task:** Adapt the code from Exercise 2, changing `"dino"` to `"star"`.
 
 **Step 1: Filter for star data**
-```{r star-data, eval = FALSE}
-star_data %
-  filter(dataset == ___)
+```{r}
+star_data <- datasaurus_dozen %>%
+  filter(dataset == "star")
 ```
 
 **Step 2: Create the plot**
-```{r star-plot, fig.fullwidth=TRUE, eval = FALSE}
-ggplot(data = ___, mapping = aes(x = x, y = y)) +
+```{r fig.fullwidth=TRUE}
+ggplot(data = star_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
 
 **Step 3: Calculate correlation**
-```{r star-correlation, eval = FALSE}
+```{r star-correlation}
 star_data %>%
   summarize(r = cor(x, y))
 ```
 
 **Write your answers:**
 
-- The correlation coefficient for the star dataset is: 
+- The correlation coefficient for the star dataset is: -0.0630
 
-- Compared to the dino dataset (r = -0.06447185), the star dataset's correlation is: 
+- Compared to the dino dataset (r = -0.06447185), the star dataset's correlation is: Greater than the correlation coefficient of the dino dataset.
 
 🧶 ✅ ⬆️ *This is another good place to pause, knit, commit changes with the commit message "Added answer for Ex 3", and push. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
 
