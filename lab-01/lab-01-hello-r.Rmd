@@ -205,6 +205,8 @@ Second, the assignment operator: `<-`, assigns the name `dino_data` to the filte
 
 Next, we need to visualize these data. We will use the `ggplot` function for this. Its first argument is the data you're visualizing. Next we define the `aes`thetic mappings. In other words, the columns of the data that get mapped to certain aesthetic features of the plot, e.g. the `x` axis will represent the variable called `x` and the `y` axis will represent the variable called `y`. Then, we add another layer to this plot where we define which `geom`etric shapes we want to use to represent each observation in the data. In this case we want these to be points, hence `geom_point`.
 
+Here is the graph of x and y for the "dino" dataset.
+
 ```{r fig.fullwidth=TRUE}
 ggplot(data = dino_data, mapping = aes(x = x, y = y)) +
   geom_point()
@@ -224,6 +226,8 @@ Start with `dino_data` and calculate a summary statistic that we will call `r` a
 dino_data %>%
   summarize(r = cor(x, y))
 ```
+
+The correlation coefficient between x and y is -0.0645.
 
 🧶 ✅ ⬆️ *Knit, commit, and push your changes to GitHub with the commit message "Added answer for Ex 2". Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
 
