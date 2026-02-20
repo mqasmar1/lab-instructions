@@ -11,7 +11,7 @@ output:
     css: ../lab.css
     tufte_variant: "envisioned"
     highlight: breezedark
-link-citations: true
+    link-citations: true
 ---
 
 ```{marginfigure}
@@ -90,7 +90,7 @@ Before we introduce the data, let's warm up with some simple exercises.
 The top portion of your R Markdown file (between the three dashed lines) is called YAML. It stands for "YAML Ain't Markup Language". It is a human friendly data serialization standard for all programming languages. All you need to know is that this area is called the YAML (we will refer to it as such) and that it contains meta information about your document.
 ```
 
-### YAML
+## YAML
 
 Open the R Markdown (Rmd) file in your project, change the author name to your name, and knit the document.
 
@@ -98,19 +98,19 @@ Open the R Markdown (Rmd) file in your project, change the author name to your n
 knitr::include_graphics("img/yaml-raw-to-rendered.png")
 ```
 
-### Committing changes
+## Committing changes
 
 Then go to the Git pane in your RStudio.
 
 If you have made changes to your Rmd file, you should see it listed here. Click on it to select it in this list and then click on **Diff**. This shows you the *diff*erence between the last committed state of the document and its current state that includes your changes. If you're happy with these changes, write "Update author name" in the **Commit message** box and hit **Commit**.
 
-```{r update-author-name-commit, fig.fullwidth=TRUE, echo = FALSE}
+```{r update-author-name-commit, echo=FALSE, fig.fullwidth=TRUE, fig.height=3, fig.width=3}
 knitr::include_graphics("img/update-author-name-commit.png")
 ```
 
 You don't have to commit after every change, this would get quite cumbersome. You should consider committing states that are *meaningful to you* for inspection, comparison, or restoration. In the first few assignments we will tell you exactly when to commit and in some cases, what commit message to use. As the semester progresses we will let you make these decisions.
 
-### Pushing changes
+## Pushing changes
 
 Now that you have made an update and committed this change, it's time to push these changes to the web! Or more specifically, to your repo on GitHub. Why? So that others can see your changes. And by others, we mean the course teaching team (your repos in this course are private to you and us, only).
 
@@ -207,7 +207,7 @@ Next, we need to visualize these data. We will use the `ggplot` function for thi
 
 Here is the graph of x and y for the "dino" dataset.
 
-```{r fig.fullwidth=TRUE, fig.height=5, fig.width=6}
+```{r fig.fullwidth=TRUE, fig.height=3, fig.width=3}
 ggplot(data = dino_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
@@ -242,7 +242,7 @@ star_data <- datasaurus_dozen %>%
 ```
 
 **Step 2: Create the plot**
-```{r fig.fullwidth=TRUE, fig.height=5, fig.width=6}
+```{r fig.fullwidth=TRUE, fig.height=3, fig.width=3}
 ggplot(data = star_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
@@ -266,7 +266,7 @@ star_data %>%
 **Your task:** Adapt the code from Exercises 2 and 3, changing the dataset to `"circle"`.
 
 **Filter, plot, and calculate correlation:**
-```{r fig.height=5, fig.width=6}
+```{r fig.height=3, fig.width=3}
 circle_data <- datasaurus_dozen %>%
   filter(dataset == "circle")
 ```
@@ -297,7 +297,7 @@ Facet by the dataset variable, placing the plots in a 3 column grid, and don't a
 
 5.  Finally, let's plot all datasets at once. In order to do this we will make use of faceting.
 
-```{r all-viz, fig.fullwidth=TRUE, fig.height=5, fig.width=6}
+```{r all-viz, fig.fullwidth=TRUE, fig.height=3, fig.width=3}
 ggplot(datasaurus_dozen, aes(x = x, y = y, color = dataset))+
   geom_point()+
   facet_wrap(~ dataset, ncol = 3) +
