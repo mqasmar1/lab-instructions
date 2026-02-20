@@ -2,16 +2,16 @@
 title: "Lab 01 - Hello R!"
 author: "Max Asmar"
 output: 
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: breezedark
+    keep_tex: true
+    citation_package: natbib
   tufte::tufte_html:
     css: ../lab.css
     tufte_variant: "envisioned"
-    highlight: pygments
-  tufte::tufte_handout:
-    latex_engine: xelatex
-    highlight: pygments
-    keep_tex: true
-    citation_package: natbib
-    link-citations: true
+    highlight: breezedark
+link-citations: true
 ---
 
 ```{marginfigure}
