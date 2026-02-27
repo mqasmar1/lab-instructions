@@ -1,16 +1,16 @@
 ---
 title: "Lab 02 - Global plastic waste"
-author: "[Your Name]"
+author: "Max Asmar"
 output: 
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
   tufte::tufte_handout:
     latex_engine: xelatex
     highlight: pygments
     keep_tex: true
     citation_package: natbib
-  tufte::tufte_html:
-    css: ../lab.css
-    tufte_variant: "envisioned"
-    highlight: pygments
 link-citations: true
 ---
 ```{r include = FALSE}
@@ -95,20 +95,20 @@ Before diving into the exercises, let's make sure you're familiar with the RStud
 
 **Question 1:** Without looking, can you name the four panes in RStudio and briefly describe their purpose?
 
-**Your answer:**
+**Your answer:** There is the git pane, help pane, console pane, and source pane. The git pane allows you to commit, push, and pull to Github. The help pane allows you to view the libraries that you are using and read more about them. The console pane and terminal lets you type in code that gets directly computed. The source pane allows you to edit the YAML and other files in R Studio.
 
 
 **Question 2:** Verify that the dataset has loaded into the Environment pane. How many observations are in the dataset?
 
 **Hint:** Look in the Environment pane, or run `nrow(plastic_waste)` in the Console, or click on the dataset name to view it.
 
-**Your answer:** The dataset has _____ observations.
+**Your answer:** The dataset has 240  observations. I ran `nrow(plastic_waste)` in the Console.
 
 **Question 3:** Have a quick look at the data using `View(plastic_waste)` in the Console. You'll notice that some cells contain `NA`. What does `NA` mean in R?
 
 **Hint:** Run `?NA` in the Console to see the documentation.
 
-**Your answer:**
+**Your answer:** In R, NA means that there is a missing value in the dataset.
 
 
 
