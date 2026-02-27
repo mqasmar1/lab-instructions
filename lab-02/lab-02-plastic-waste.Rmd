@@ -251,20 +251,22 @@ ggplot(data = plastic_waste,
 Convert your side-by-side box plots from the previous task to [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html). What do the violin plots reveal that box plots do not? What features are apparent in the box plots but not in the violin plots?
 
 **Hint:** Simply replace `geom_boxplot()` with `geom_violin()`.
-```{r plastic-waste-violin, eval=FALSE}
+```{r plastic-waste-violin, eval=TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ggplot(data = plastic_waste, 
        mapping = aes(x = continent, 
                      y = plastic_waste_per_cap)) +
-  geom___()
+  geom_violin()
 ```
 
 **What do violin plots reveal that box plots do not?**
 
+Violin plots better show the distribution/spread of data in the dataset. It is easier to see visually where the data is concentrated.
 
 
 **What features are apparent in box plots but not in violin plots?**
 
+Box plots show the median and interquartile ranges, which is harder to determine in the violin plots.
 
 ---
 
@@ -282,7 +284,7 @@ Visualize the relationship between plastic waste per capita and mismanaged plast
 ggplot(data = ___, 
        mapping = aes(x = ___, 
                      y = ___)) +
-  geom___()
+  geom_point()
 ```
 
 **Describe the relationship between plastic waste per capita and mismanaged plastic waste per capita:**
