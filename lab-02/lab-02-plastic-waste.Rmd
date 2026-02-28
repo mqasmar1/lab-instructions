@@ -2,15 +2,15 @@
 title: "Lab 02 - Global plastic waste"
 author: "Max Asmar"
 output: 
-  tufte::tufte_html:
-    css: ../lab.css
-    tufte_variant: "envisioned"
-    highlight: pygments
   tufte::tufte_handout:
     latex_engine: xelatex
     highlight: pygments
     keep_tex: true
     citation_package: natbib
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
 link-citations: true
 ---
 ```{r include = FALSE}
@@ -95,7 +95,7 @@ Before diving into the exercises, let's make sure you're familiar with the RStud
 
 **Question 1:** Without looking, can you name the four panes in RStudio and briefly describe their purpose?
 
-**Your answer:** There is the git pane, help pane, console pane, and source pane. The git pane allows you to commit, push, and pull to Github. The help pane allows you to view the libraries that you are using and read more about them. The console pane and terminal lets you type in code that gets directly computed. The source pane allows you to edit the YAML and other files in R Studio.
+**Your answer:** There is the environment/history pane, help/packages/files/plots pane, console pane, and source pane. The environment/history pane allows you to view changes and loaded objects. The git pane lets you commit to github. The help/files/packages/plots pane allows you to analyze the libraries that you are using, download packages, navigate directories. The console pane and terminal lets you type in code that gets directly computed. The source pane allows you to edit the YAML and other files in R Studio.
 
 
 **Question 2:** Verify that the dataset has loaded into the Environment pane. How many observations are in the dataset?
