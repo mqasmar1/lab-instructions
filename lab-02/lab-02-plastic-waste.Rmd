@@ -279,16 +279,17 @@ Now let's explore relationships between variables using scatterplots.
 Visualize the relationship between plastic waste per capita and mismanaged plastic waste per capita using a scatterplot. Describe the relationship.
 
 **Reminder:** Use `geom_point()` to create scatterplots.
-```{r plastic-waste-mismanaged, eval=FALSE}
+```{r plastic-waste-mismanaged, eval=TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = ___, 
-       mapping = aes(x = ___, 
-                     y = ___)) +
+ggplot(data = plastic_waste, 
+       mapping = aes(x = plastic_waste_per_cap, 
+                     y = mismanaged_plastic_waste_per_cap)) +
   geom_point()
 ```
 
 **Describe the relationship between plastic waste per capita and mismanaged plastic waste per capita:**
 
+Plastic waste per capita and mismanaged plastic waste per capita have a positive correlation. If the plastic waste per capita is greater, then the mismanaged plastic waste per capita is more likely to be greater. The scatter plot shows this relationship with a few outliers. I predict that the line of best fit is a line with positive slope, which supports this.
 
 ---
 
@@ -297,17 +298,18 @@ ggplot(data = ___,
 Color the points in the scatterplot by continent. Does there seem to be any clear distinctions between continents with respect to how plastic waste per capita and mismanaged plastic waste per capita are associated?
 
 **Hint:** Add `color = continent` to your `aes()` mapping.
-```{r plastic-waste-mismanaged-continent, eval=FALSE}
+```{r plastic-waste-mismanaged-continent, eval=TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ggplot(data = plastic_waste, 
        mapping = aes(x = plastic_waste_per_cap, 
                      y = mismanaged_plastic_waste_per_cap,
-                     color = ___)) +
+                     color = continent)) +
   geom_point()
 ```
 
 **Are there clear distinctions between continents?**
 
+Yes, there are clear distinctions between continents. Europe tends to have the lowest mismanaged plastic waste per capita with respect to plastic waste per capita. Asia has the largest range of mismanaged plastic waste per capita. Africa qualitatively has the largest slope for plastic waste per capita to mismanaged plastic waste per capita, which highlights a problem with waste management of the waste produced.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 4-6", and push your changes.**
