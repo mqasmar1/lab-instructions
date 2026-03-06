@@ -195,7 +195,7 @@ How many observations and how many variables are in the dataset? Use inline code
 
 **Write your answer using inline code:**
 
-The nobel dataset has _____ observations and _____ variables. Each row represents _____.
+The nobel dataset has `r nrow(nobel)` observations and `r ncol(nobel)` variables. Each row represents a set of information about a Nobel Laureate winner and his/her information such as name, year, category, city, etc .
 
 ---
 
@@ -210,19 +210,19 @@ Create a new data frame called `nobel_living` that filters for:
 -   laureates who are still alive (their `died_date` is `NA`)
 
 **Fill in the blanks below:**
-```{r create-nobel-living, eval=FALSE}
+```{r create-nobel-living, eval=TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-nobel_living %
+nobel_living <- nobel %>%
   filter(
-    !is.na(___),
-    ___ != "org",
-    is.na(___)
+    !is.na(country),
+    gender != "org",
+    is.na(died_date)
   )
 ```
 
 **Verify your filtering:** Confirm that once you have filtered for these characteristics you are left with a data frame with 228 observations. Use inline code to check: ` nrow(nobel_living) `
 
-**Your verification:** After filtering, nobel_living has ____ observations.
+**Your verification:** After filtering, nobel_living has `r nrow(nobel_living)` observations.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
 
