@@ -1,6 +1,6 @@
 ---
 title: "Lab 03 - Nobel laureates"
-author: "[Your Name]"
+author: "Max Asmar"
 output: 
   tufte::tufte_html:
     css: ../lab.css
@@ -165,11 +165,11 @@ Before diving into the exercises, let's get familiar with the data.
 
 **Hint:** Use   backtick r nrow(nobel) backtick  for rows and  backtick r ncol(nobel) backtick for columns in your narrative text.
 
-**Your answer:** 
+**Your answer:** There are `r nrow(nobel)` observations and `r ncol(nobel)` variables in the dataset.
 
 **Question 2:** Run `View(nobel)` in your Console. What does each row represent?
 
-**Your answer:**
+**Your answer:** Each row/observation represents a Nobel Laureate winner and his/her information such as name, year, category, city, etc. I did this by running `View(nobel)` in the console.
 
 
 
@@ -179,7 +179,7 @@ Before diving into the exercises, let's get familiar with the data.
 
 **Your answer:**
 
-___________________________________________________________________________
+In this dataset the categories are Chemistry, Economics, Literature, Medicine, Peace, and Physics. I did this by running `count(nobel, category)` in the Console.  
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
 
