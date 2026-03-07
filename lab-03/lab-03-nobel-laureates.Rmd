@@ -238,8 +238,8 @@ First, we'll create a new variable to identify whether the laureate was in the U
 The `if_else()` function tests a condition. If TRUE, it returns the first value ("USA"); if FALSE, it returns the second value ("Other").
 ```
 
-```{r create-country-us, eval = FALSE}
-nobel_living %>%
+```{r create-country-us, eval = TRUE}
+nobel_living <- nobel_living %>%
   mutate(
     country_us = if_else(country == "USA", "USA", "Other")
   )
@@ -252,7 +252,7 @@ nobel_living %>%
 
 Next, we will limit our analysis to only the following categories: Physics, Medicine, Chemistry, and Economics.
 
-```{r create-science-data, eval = FALSE}
+```{r create-science-data, eval = TRUE}
 nobel_living_science  <- nobel_living %>%
   filter(category %in% c("Physics", "Medicine", "Chemistry", "Economics"))
 ```
@@ -272,12 +272,13 @@ Create a faceted bar plot visualizing the relationship between the category of p
 -   Flip the coordinates so the bars are horizontal, not vertical
 
 **Build your visualization:**
-```{r nobel-bar-plot, eval=FALSE}
+```{r nobel-bar-plot, eval=TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = nobel_living_science, aes(x = ___)) +
+ggplot(data = nobel_living_science, aes(x = country_us)) +
   geom_bar() +
   coord_flip() +
-  facet_wrap(~___)
+  facet_wrap(~category) +
+  ggtitle("Number of Nobel Laureates based in the U.S. vs. Outside the U.S.")
 ```
 
 **Hints:**
@@ -289,6 +290,8 @@ ggplot(data = nobel_living_science, aes(x = ___)) +
 **Interpretation:** Does the Buzzfeed headline ("Most living Nobel laureates were based in the US when they won their prizes") appear to be supported by the data? Consider all four scientific categories.
 
 **Your answer:**
+
+I think that the Buzzfeed headline is supported by the data because in all 4 displines (Chemistry, Economics, Medicine, Physics) over half of the Nobel Laureates were based in the United States. This disparity is most clear in Economics, where the number of Nobel Laureates based in the U.S. is over 6 times the number of Nobel Laureates based outside. The discipline with the highest proportion of laureates not based in the US out of the 4 disciplines is Chemistry. I determined this by analyzing the bar charts for each discipline plotting the number of laureates based in the US or outside.
 
 
 
