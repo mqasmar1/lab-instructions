@@ -152,14 +152,18 @@ Take a look at the websites that the data come from (linked above). Are there an
 **Browse the websites and list the countries:**
 
 **La Quinta locations outside the US:**
-- 
-- 
-- 
+- China
+- New Zealand
+- Turkey
+- Canada
+- Mexico
+- Georgia
+- United Arab Emirates
+- Colombia
+- Ecuador
 
 **Denny's locations outside the US:**
-- 
-- 
-- 
+Using the link from above, (https://locations.dennys.com/), there are no international locations on the Denny's map, so I postulate that there are 0 Denny's locations outside the US based on the given data.
 
 ---
 
@@ -168,9 +172,9 @@ Take a look at the websites that the data come from (linked above). Are there an
 Now take a look at the data (use `View(dennys)` and `View(laquinta)` in the Console). What would be some ways of determining whether or not either establishment has any locations outside the US using just the data (and not the websites)? Don't worry about whether you know how to implement this, just brainstorm some ideas.
 
 **Your ideas:**
-- 
-- 
-- 
+- I could print out the observations that do not have their "state" variable as one of the 50 U.S. states or the city as Washington D.C.. 
+- I could scrape the names of all the cities in the United States, go through the dennys/laquinta dataset and print out the observations that do not have the city variable as one of the US cities.
+- I could also scrape the zip codes in the United States, go through the dennys/laquinta dataset and print out the observations that do not have any matching zip code.
 
 ---
 
@@ -189,9 +193,9 @@ dennys %>%
   filter(!(state %in% states$abbreviation))
 ```
 
-**How many Denny's locations are outside the US?** _____
+**How many Denny's locations are outside the US?** 0
 
-**If there are any, which state/province codes appear?** _____
+**If there are any, which state/province codes appear?** N/A
 
 ---
 
@@ -205,16 +209,16 @@ The `<-` assignment operator saves the result. Without it, R will display the re
 ```
 
 **Complete the code:**
-```{r add-dennys-country, eval = FALSE}
+```{r add-dennys-country, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 dennys <- dennys %>%
-  mutate(___ = "___")
+  mutate(country = "United States")
 ```
 
 **What this does:**
 
   Step 1. Takes the `dennys` dataset
-  
+
   Step 2. Adds a new variable called `country` with the value "United States" for all rows
   
   Step 3. Saves the result back to `dennys` (replacing the old version)
@@ -238,16 +242,16 @@ laquinta %>%
 
 | State Code | Country |
 |:-----------|:--------|
-| ON         |         |
-| BC         |         |
-| ANT        |         |
-| AG         |         |
-| QR         |         |
-| CH         |         |
-| NL         |         |
-| VE         |         |
-| PU         |         |
-| SL         |         |
+| ON         |    Canada     |
+| BC         |    Canada     |
+| ANT        |    Colombia     |
+| AG         |    Mexico     |
+| QR         |    Mexico     |
+| CH         |    Mexico     |
+| NL         |    Mexico     |
+| VE         |    Mexico     |
+| PU         |    Mexico     |
+| SL         |    Mexico     |
 
 **Hint:** Google the state codes along with "La Quinta" to find out which countries they're in.
 
@@ -258,14 +262,14 @@ laquinta %>%
 Add a country variable to the La Quinta dataset. Use the `case_when()` function to populate this variable based on the state codes. You'll need to refer to your notes from Exercise 7 about which country the non-US locations are in.
 
 **Complete the code:**
-```{r add-laquinta-country, eval = FALSE}
+```{r add-laquinta-country, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 laquinta <- laquinta %>%
   mutate(country = case_when(
     state %in% state.abb     ~ "United States",
-    state %in% c("ON", "BC") ~ "___",
-    state == "ANT"           ~ "___",
-    state %in% c("AG", "QR", "CH", "NL", "VE", "PU", "SL") ~ "___"
+    state %in% c("ON", "BC") ~ "Canada",
+    state == "ANT"           ~ "Colombia",
+    state %in% c("AG", "QR", "CH", "NL", "VE", "PU", "SL") ~ "Mexico"
   ))
 ```
 
