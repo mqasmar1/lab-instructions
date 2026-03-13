@@ -125,7 +125,7 @@ What are the dimensions of the Denny's dataset? What does each row in the datase
 
 **Use inline code to report dimensions.** In your narrative text, you can use inline R code with the functions `nrow()` and `ncol()` to report the number of rows and columns.
 
-**Your answer:** The Denny's dataset has _____ rows and _____ columns. Each row represents _____. The variables are _____.
+**Your answer:** The Denny's dataset has `r nrow(dennys)` rows and `r ncol(dennys)` columns. Each row represents an observation of a denny's restaurant and its location. The variables are address, city, state, zip, longitude, and latitude. I found this out by running `?dennys` in the console.
 
 **Hint:** Run `glimpse(dennys)` or `?dennys` to see variable descriptions.
 
@@ -135,7 +135,7 @@ What are the dimensions of the Denny's dataset? What does each row in the datase
 
 What are the dimensions of the La Quinta dataset? What does each row in the dataset represent? What are the variables?
 
-**Your answer:** The La Quinta dataset has _____ rows and _____ columns. Each row represents _____. The variables are _____.
+**Your answer:** The La Quinta dataset has `r nrow(laquinta)` rows and `r ncol(laquinta)` columns. Each row represents one motel and its location. The variables are address, city, state, zip, longitude, and latitude. I found this out by running `?laquinta` in the console.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
 
