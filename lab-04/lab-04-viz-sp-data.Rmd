@@ -292,8 +292,8 @@ Without the assignment, the code would create a new dataset with the `country` v
 ## Analyzing US Locations Only
 
 Going forward we will work with the data from the United States only. All Denny's locations are in the United States, so we don't need to worry about them. However we do need to filter the La Quinta dataset for locations in United States.
-```{r filter-us-laquinta, eval = FALSE}
-laquinta %>%
+```{r filter-us-laquinta, eval = TRUE}
+laquinta <- laquinta %>% 
   filter(country == "United States")
 ```
 
@@ -302,34 +302,43 @@ laquinta %>%
 Which states have the most and fewest Denny's locations? What about La Quinta? Is this surprising? Why or why not?
 
 **First, count locations by state:**
-```{r count-by-state, eval = FALSE}
+```{r count-by-state, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Denny's by state
 dennys %>%
-  count(___) %>%
-  arrange(desc(___))
+  count(state) %>%
+  arrange(n)
+
+dennys %>%
+  count(state) %>%
+  arrange(desc(n))
 
 # La Quinta by state
 laquinta %>%
-  count(___) %>%
-  arrange(desc(___))
+  count(state) %>%
+  arrange(n)
+
+laquinta %>%
+  count(state) %>%
+  arrange(desc(n))
 ```
 
 **Your findings:**
 
 **Denny's:**
 
-- State with most locations: _____
-- State with fewest locations: _____
+- State with most locations: California
+- State with fewest locations: Delaware
 
 **La Quinta:**
 
-- State with most locations: _____
-- State with fewest locations: _____
+- State with most locations: Texas
+- State with fewest locations: Maine
 
 **Is this surprising? Why or why not?**
 
+I think this is unsurprising because Maine and Delaware have significantly lower populations than other states such as California or New York.
 
 
 ---
@@ -348,6 +357,8 @@ dennys %>%
 
 **Run this code in your Console and examine the output before proceeding.**
 
+I got a list of states with corresponding n, name, and area variables.
+
 ---
 
 ## Exercise 10
@@ -355,34 +366,41 @@ dennys %>%
 Which states have the most Denny's locations per thousand square miles? What about La Quinta?
 
 **Build on the code above to calculate density:**
-```{r dennys-density, eval = FALSE}
+```{r dennys-density, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 dennys %>%
   count(state) %>%
   inner_join(states, by = c("state" = "abbreviation")) %>%
-  mutate(density = ___ / ___ * 1000) %>%
-  arrange(desc(___))
+  mutate(density = n / area * 1000) %>%
+  arrange(desc(density))
 ```
 
 **Hint:** Density = number of locations / area * 1000
 
 **Now do the same for La Quinta:**
-```{r laquinta-density, eval = FALSE}
+```{r laquinta-density, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 # Your code here
+laquinta %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  mutate(density = n / area * 1000) %>%
+  arrange(desc(density))
 ```
 
 **Your findings:**
 
 **Denny's:**
 
-- State with highest density: _____
-- Density value: _____
+- State with highest density: Rhode Island. 
+- Density value: 3.24
+
+If Washington D.C. is considered a "state", then it has the highest density of Denny's restaurants with a value of 29.3.
 
 **La Quinta:**
 
-- State with highest density: _____
-- Density value: _____
+- State with highest density: Rhode Island
+- Density value: 1.29
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 9-10", and push your changes.**
 
