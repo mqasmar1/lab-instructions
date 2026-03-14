@@ -395,7 +395,7 @@ laquinta %>%
 - State with highest density: Rhode Island. 
 - Density value: 3.24
 
-If Washington D.C. is considered a "state", then it has the highest density of Denny's restaurants with a value of 29.3.
+If Washington D.C. is considered a "state", then it has the highest density of Denny's restaurants with a value of 29.3. Washington DC is a district though.
 
 **La Quinta:**
 
