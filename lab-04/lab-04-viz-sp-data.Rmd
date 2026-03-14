@@ -425,7 +425,7 @@ dn_lq <- bind_rows(dennys, laquinta)
 
 We can plot the locations of the two establishments using a scatter plot, and color the points by the establishment type. Note that the longitude is plotted on the x-axis and the latitude on the y-axis.
 
-```{r plot-all-locations, eval = FALSE}
+```{r plot-all-locations, eval = TRUE}
 ggplot(dn_lq, mapping = aes(x = longitude, y = latitude, color = establishment)) +
   geom_point()
 ```
@@ -440,22 +440,50 @@ Filter the data for observations in North Carolina only, and recreate the plot. 
 
 **Create the filtered plot:**
 
-```{r nc-plot, eval = FALSE}
+```{r nc-plot-alpha-0.7, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 dn_lq %>%
-  filter(___ == "NC") %>%
-  ggplot(mapping = aes(x = ___, y = ___, color = ___)) +
-  geom_point(alpha = ___) +
+  filter(state == "NC") %>%
+  ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.7) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of Denny's and La Quinta in North Carolina",
+    x = "Longitude",
+    y = "Latitude"
+  )
+```
+
+```{r nc-plot-alpha-0.5, eval = TRUE}
+# Remember to change eval=FALSE to eval=TRUE!
+dn_lq %>%
+  filter(state == "NC") %>%
+  ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.5) +
+  labs(
+    title = "Distribution of Denny's and La Quinta in North Carolina",
+    x = "Longitude",
+    y = "Latitude"
+  )
+```
+
+```{r nc-plot-alpha-0.3, eval = TRUE}
+# Remember to change eval=FALSE to eval=TRUE!
+dn_lq %>%
+  filter(state == "NC") %>%
+  ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.2) +
+  labs(
+    title = "Distribution of Denny's and La Quinta in North Carolina",
+    x = "Longitude",
+    y = "Latitude"
   )
 ```
 
 **Try different alpha values like 0.3, 0.5, or 0.7 to see which works best.**
 
 **Does Mitch Hedberg's joke appear to hold in North Carolina?** (Are Denny's and La Quinta locations close together?)
+
+Yes, Mitch Hedberg's joke appears to hold in North Carolina. For most observations in North Carolina, the longitude and latitude of the Denny's location is close to the longitude and latitude of the La Quinta location, most of the time. In other words, the Denny's and La Quinta tend to be clustered together.
 
 
 
@@ -465,17 +493,26 @@ dn_lq %>%
 
 Now filter the data for observations in Texas only, and recreate the plot with an appropriate alpha level. Visually, does Mitch Hedberg's joke appear to hold here?
 
-```{r texas-plot, eval = FALSE}
+```{r texas-plot, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-# Your code here (adapt from Exercise 11)
+dn_lq %>%
+  filter(state == "TX") %>%
+  ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.3) +
+  labs(
+    title = "Distribution of Denny's and La Quinta in Texas",
+    x = "Longitude",
+    y = "Latitude"
+  )
 ```
 
 **Does Mitch Hedberg's joke appear to hold in Texas?**
 
-
+Yes, Hedberg's joke appears to hold in Texas. For every observation of a Denny's in Texas, there is almost always an observation of a La Quinta overlapping the point on the graph. The Denny's and La Quinta establishments tend to be clustered.
 
 **Compare North Carolina and Texas: In which state does the joke seem more accurate?**
 
+The joke seems more accurate in Texas. I postulate that this is the case because there are more observations of Denny's and La Quinta in Texas, so the pattern of the establishments being close together should be more prevalent.
 
 
 
