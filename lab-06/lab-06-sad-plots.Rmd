@@ -1,6 +1,6 @@
 ---
 title: "Lab 06 - Take a sad plot and make it better"
-author: "Your Name"
+author: "Max Asmar"
 output: 
   tufte::tufte_html:
     css: ../lab.css
