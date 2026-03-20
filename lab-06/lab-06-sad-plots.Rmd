@@ -318,7 +318,15 @@ staff_long %>%
              y = value, 
              group = faculty_type, 
              color = faculty_type)) +
-  geom_line(aes(linewidth = faculty_type)) +
+  geom_line(aes(linewidth = faculty_type))  +
+  guides(linewidth= "none") +
+  scale_linewidth_manual(values=c(
+    "Part-Time Faculty" = 3, 
+    "Full-Time Tenured Faculty" = 2,
+    "Graduate Student Employees" = 2,
+    "Full-Time Non-Tenure-Track Faculty" = 2,
+    "Full-Time Tenure-Track Faculty" = 2
+  )) +
   annotate("text", x = 2005, y = 40, label = "Part-time faculty % increasing") +
   scale_color_manual(values = c("Part-Time Faculty" = "red", 
                                "Full-Time Tenured Faculty" = "gray10",
@@ -336,7 +344,7 @@ staff_long %>%
 
 **Explain your design decisions:** Write a brief paragraph (3-5 sentences) describing the changes you made and how they help tell the story that part-time faculty proportions have increased.
 
-I colored the part-time faculty trendline to be red while making all of the other lines shades of gray to emphasize the change in proportion of part-time faculty members. In the top right corner of the graph, I added an annotation to demonstrate that there was a positive net change in the percentage of part-time faculty out of educational staff. I also increased the line width so that the trendlines for all independent variables would be easier to follow. 
+I colored the part-time faculty trendline to be red while making all of the other lines shades of gray to emphasize the change in proportion of part-time faculty members. In the top right corner of the graph, I added an annotation to demonstrate that there was a positive net change in the percentage of part-time faculty out of educational staff. I also increased the line width so that the trendlines for all independent variables would be easier to follow. I think visibility is one of the most important aspects of good data visualizations, and the contrast between the bright red of the part-time faculty trendline and the rest of the trendlines helps tell the story of how part-time faculty proportions increased over time.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 2-3", and push your changes.**
 
@@ -353,6 +361,8 @@ knitr::include_graphics("img/fisheries.png")
 
 **What's wrong with this plot?** Look at it carefully and think about readability, colors, labels, and effectiveness.
 
+The readability of the plot could be greatly improved because many of the variables appear to overlap and there are many unnecessary features. For example, it is distracting that the pie charts are not flat. There are no axis labels or title for the chart on the left. 
+
 ---
 
 ## Exercise 4
@@ -363,23 +373,23 @@ Can you help them improve it? First, brainstorm how you would improve it. Write 
 
 **Problems with the original plot:**
 
-- Problem 1: 
+- Problem 1: The pie charts are distracting because they are not flat (2D in spatial coordinates).
 
-- Problem 2: 
+- Problem 2: There are no axis labels on the area chart.  
 
-- Problem 3: 
+- Problem 3: There is no title for the area chart.
 
-- Problem 4: 
+- Problem 4: The only country that is interpretable in the area chart is China while the scale is inappropriate for the rest of the countries in the study.
 
 **Proposed improvements:** For each problem above, suggest a solution:
 
-- Improvement 1: 
+- Improvement 1: The pie charts should be turned into flat (2D in spatial coordinates) charts so that the charts are more intuitive and easy to read.
 
-- Improvement 2: 
+- Improvement 2: The area chart should have axis labels for both the x and y axis.
 
-- Improvement 3: 
+- Improvement 3: The area chart should have a title, which can be added inside the labs() function.
 
-- Improvement 4: 
+- Improvement 4: The area chart should be filtered to just include the top 20 countries in the dataset.
 
 **Possible issues to consider:**
 
@@ -442,18 +452,38 @@ labs(title = "...", x = "...", y = "...", fill = "...")
 ```
 
 **Your improved visualization:**
-```{r improved-fisheries-plot, fig.width = 8, fig.height = 10, eval = FALSE}
+```{r improved-fisheries-plot, fig.width = 8, fig.height = 10, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 # Your code here
+  fisheries %>%
+    slice_max(total, n = 20) %>% # Keep only top 20
+    mutate(country = fct_reorder(country, total)) %>%
+    pivot_longer(
+      cols=c(capture, aquaculture),
+      names_to = "fishery_type",
+      values_to = "ton_amount"
+    ) %>%
+  ggplot(aes(x = country, 
+             y = ton_amount, 
+             fill = fishery_type)) +
+  geom_col() +
+  labs(
+    title = "Tons of fishery output by top 20 countries with the most fishery output",
+    x = "Country",
+    y = "Number of Tons",
+    fill = "Type of fishery"
+  ) +
+    coord_flip()
 ```
 
 **Explain your design decisions:** Write a paragraph (4-6 sentences) describing the changes you made and how they improve the visualization.
 
+I decided to create a variable to represent the type of fishery so that I could have a tidier dataset and so that I could use this new variable (fishery_type) to use as fill color for the graph. For the graph, I decided to use a bar chart to show both the relative proportions of aquaculture v. capture in each country and the approximate number of tons for each type of fishery. I also added axis labels for both the number of tons (x axis) and the country (y axis). I used coord_flip() so that the country names would fit on the visualization. My graph is also 2 spatial dimensions, which is different than the pie charts from before. I think my graph combines the findings from all three of the original graphs because of the fill and bar_chart type. I think having multiple levels of analysis on the same plots overall helps for a cleaner aesthetic and stronger visualization.
 
 
 **Did your improved visualization accomplish your goals?** Are there any improvements you proposed that you weren't able to implement? If so, what are they?
 
-
+One improvement I proposed that I wasn't able to implement was improving the pie chart by making it two dimensional. I felt like the bar chart was the best way to summarize the findings from all 3 charts, but I'm still curious to explore pie charts and their benefits and disadvantages in presenting data.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 4-5", and push your changes.**
 
