@@ -2,15 +2,15 @@
 title: "Lab 06 - Take a sad plot and make it better"
 author: "Max Asmar"
 output: 
-  tufte::tufte_html:
-    css: ../lab.css
-    tufte_variant: "envisioned"
-    highlight: pygments
   tufte::tufte_handout:
     latex_engine: xelatex
     highlight: pygments
     keep_tex: true
     citation_package: natbib
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
 link-citations: true
 ---
 ```{r setup, include=FALSE}
@@ -226,9 +226,9 @@ staff_long %>%
              color = faculty_type)) +
   geom_line() +
   labs(
-    title = "Types of Educational Staff Hired Each Year by Percentage",
+    title = "Relative Proportions of Educational Staff Plot",
     x = "Year",
-    y = "Percentage of Hires (%)",
+    y = "Proportion (%)",
     color = "Types of educational staff"
   )
 ```
@@ -272,17 +272,17 @@ Suppose the objective of this plot was to show that the proportion of part-time 
 
 **Your proposed changes (write at least 3):**
 
-- Change 1: 
+- Change 1: Emphasize part-time faculty by changing their color to red and changing all the other trendlines to be gray.
 
-  Why: 
+  Why: The change in percentage of Part-Time faculty is the most important finding from this graph, so making the other trendlines gray would help move the readers' eyes towards the Part-Time faculty trendline.
 
-- Change 2: 
+- Change 2: Adding annotations to the bottom of the graph would help readers identify patterns more easily.
 
-  Why: 
+  Why: Since there are 5 trendlines on the graph it would be helpful to summarize the graph for the reader and identify major findings, such as the big increase in percentage of part-time faculty.
 
-- Change 3: 
+- Change 3: Increasing the size of the lines, especially the part-time faculty line, would help emphasize the differences in percentage of educational staff
 
-  Why: 
+  Why: The trendlines would be easier to trace and help distinguish each staff type from each other. The change in proportion of part-time faculty is the most prominent observation and would be easier to read if the line was bolded.
   
 ---
 
@@ -312,14 +312,31 @@ annotate("text", x = 2005, y = 40, label = "Part-time faculty rising")
 ```
 
 **Your improved visualization:**
-```{r storytelling-plot, fig.width = 10, fig.fullwidth = TRUE, eval = FALSE}
-# Remember to change eval=FALSE to eval=TRUE!
-# Your code here - build on your Exercise 1 code
+```{r storytelling-plot, fig.width = 10, fig.fullwidth = TRUE, eval = TRUE}
+staff_long %>%
+  ggplot(aes(x = year, 
+             y = value, 
+             group = faculty_type, 
+             color = faculty_type)) +
+  geom_line(aes(linewidth = faculty_type)) +
+  annotate("text", x = 2005, y = 40, label = "Part-time faculty % increasing") +
+  scale_color_manual(values = c("Part-Time Faculty" = "red", 
+                               "Full-Time Tenured Faculty" = "gray10",
+                               "Graduate Student Employees" = "gray40",
+                               "Full-Time Non-Tenure-Track Faculty" = "gray60",
+                               "Full-Time Tenure-Track Faculty" = "gray80"
+                               )) +
+  labs(
+    title = "Relative Proportions of Educational Staff Plot",
+    x = "Year",
+    y = "Proportion (%)",
+    color = "Types of educational staff"
+  )
 ```
 
 **Explain your design decisions:** Write a brief paragraph (3-5 sentences) describing the changes you made and how they help tell the story that part-time faculty proportions have increased.
 
-
+I colored the part-time faculty trendline to be red while making all of the other lines shades of gray to emphasize the change in proportion of part-time faculty members. In the top right corner of the graph, I added an annotation to demonstrate that there was a positive net change in the percentage of part-time faculty out of educational staff. I also increased the line width so that the trendlines for all independent variables would be easier to follow. 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 2-3", and push your changes.**
 
