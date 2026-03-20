@@ -40,7 +40,6 @@ By the end of this lab, you will be able to:
 ## Prerequisites
 
 Before you begin, make sure you have:
-
 - ✅ Completed Labs 01-05
 - ✅ Reviewed lecture materials on data visualization best practices
 - ✅ Understand principles like: clear labels, appropriate colors, readable fonts, proper scales, effective use of space
@@ -107,6 +106,8 @@ knitr::include_graphics("img/staff-employment.png")
 
 **What's wrong with this plot?** Before we improve it, take a moment to think about what makes this visualization difficult to read or interpret.
 
+The plot has an unlabeled x axis and y axis, plots too many variables on the same graph, and has no title. There should be a variable for year and a variable for faculty type.
+
 Let's start by loading the data used to create this plot.
 ```{r load-data-staff, message = FALSE}
 staff <- read_csv("data/instructional-staff.csv")
@@ -125,9 +126,9 @@ But before we do so, a thought exercise: *How many rows will the long-format dat
 
 **Think about it:** The data will have a row for each combination of year and faculty type. If there are 5 faculty types and 11 years of data, how many rows will we have?
 
-**Your answer:** The long-format data will have _____ rows.
+**Your answer:** The long-format data will have 55 rows.
 
-**Calculation:** _____ faculty types × _____ years = _____ rows
+**Calculation:** 5 faculty types × 11 years = 55 rows
 
 ---
 
@@ -216,7 +217,7 @@ staff_long %>%
 Include the line plot you made above in your report and make sure the figure width is large enough to make it legible. Also add a title, improve the axis labels, and fix the legend label.
 
 **Add these improvements to your plot:**
-```{r improved-staff-plot, fig.width = 10, fig.fullwidth = TRUE, eval = FALSE}
+```{r improved-staff-plot, fig.width = 10, fig.fullwidth = TRUE, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 staff_long %>%
   ggplot(aes(x = year, 
@@ -225,10 +226,10 @@ staff_long %>%
              color = faculty_type)) +
   geom_line() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___",
-    color = "___"
+    title = "Types of Educational Staff Hired Each Year by Percentage",
+    x = "Year",
+    y = "Percentage of Hires (%)",
+    color = "Types of educational staff"
   )
 ```
 
