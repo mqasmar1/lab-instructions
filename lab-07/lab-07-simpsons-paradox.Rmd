@@ -73,6 +73,8 @@ Before we introduce the data, let's warm up with some simple exercises.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
 
+# Completed Warm Up
+
 ---
 
 ## Packages
