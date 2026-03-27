@@ -91,6 +91,8 @@ The dataset we'll use is called `Whickham` from the **mosaicData** package. You 
 
 **✓ Checkpoint:** Run `glimpse(Whickham)` in your Console to verify the data loaded correctly.
 
+# glimpse(Whickham) worked correctly
+
 ---
 
 # Exercises
@@ -108,7 +110,7 @@ What type of study do you think these data come from: observational or experimen
 
 **Your answer:** 
 
-This is an __________ study because 
+This is an observational study because the researchers are tracking the age and mortality outcomes across smokers and non-smokers. The researchers are not treating the smokers with any medication and are treating it as a closed system.
 
 ---
 
@@ -120,7 +122,7 @@ How many observations are in this dataset? What does each observation represent?
 
 **Your answer:** 
 
-The dataset has _____ observations. Each observation represents 
+The dataset has `r nrow(Whickham)` observations. Each observation represents a woman who is a smoker or non- smoker, and her age and mortality status after 20 years.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
 
