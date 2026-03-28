@@ -138,52 +138,52 @@ How many variables are in this dataset? What type of variable is each? Display e
 
 Run `glimpse(Whickham)` in your Console to see the variables.
 
-**Number of variables:** _____
+**Number of variables:** There are 3 variables in the dataset.
 
 **Variable types:**
 
 | Variable | Type (categorical/numerical) | More specific type |
 |:---------|:----------------------------|:-------------------|
-| outcome  |                             |                    |
-| smoker   |                             |                    |
-| age      |                             |                    |
+| outcome  |            categorical                 |       nominal             |
+| smoker   |            categorical                 |       nominal             |
+| age      |            numerical                 |         continuous (whole numbers)           |
 
 **Part B: Create visualizations**
 
 Create appropriate visualizations for each variable.
 
 **For categorical variables (outcome and smoker):**
-```{r visualize-categorical, eval = FALSE}
+```{r visualize-categorical, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Outcome variable
-ggplot(data = Whickham, aes(x = ___)) +
+ggplot(data = Whickham, aes(x = outcome)) +
   geom_bar() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of Outcomes",
+    x = "Outcome",
+    y = "Frequency"
   )
 
 # Smoker variable
-ggplot(data = Whickham, aes(x = ___)) +
+ggplot(data = Whickham, aes(x = smoker)) +
   geom_bar() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of Smokers and Non-Smokers",
+    x = "Smoker v. Non-Smoker",
+    y = "Frequency"
   )
 ```
 
 **For numerical variable (age):**
-```{r visualize-age, eval = FALSE}
+```{r visualize-age, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = Whickham, aes(x = ___)) +
-  geom_histogram(binwidth = ___) +
+ggplot(data = Whickham, aes(x = age)) +
+  geom_histogram(binwidth = 10) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of Ages",
+    x = "Ages",
+    y = "Frequency"
   )
 ```
 
@@ -201,7 +201,7 @@ What would you expect the relationship between smoking status and health outcome
 
 **Your prediction:**
 
-I would expect that smokers would have 
+I would expect that smokers would have worse health outcomes than non-smokers. I expect that smokers would be affected by lung damage and therefore would have higher mortality rates than non-smokers.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 3-4", and push your changes.**
 
@@ -214,15 +214,15 @@ I would expect that smokers would have
 Create a visualization depicting the relationship between smoking status and health outcome. Briefly describe the relationship, and evaluate whether this meets your expectations. Additionally, calculate the relevant conditional probabilities to help your narrative.
 
 **Part A: Create a visualization**
-```{r smoker-outcome-viz, eval = FALSE}
+```{r smoker-outcome-viz, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = Whickham, aes(x = ___, fill = ___)) +
-  geom_bar(position = "___") +
+ggplot(data = Whickham, aes(x = smoker, fill = outcome)) +
+  geom_bar(position = "fill") +
   labs(
-    title = "___",
-    x = "___",
-    y = "___",
-    fill = "___"
+    title = "Relationship between Smoking status and health outcome",
+    x = "Smoking status",
+    y = "Proportion",
+    fill = "Health outcome"
   )
 ```
 
@@ -244,21 +244,22 @@ Whickham %>%
 **Part C: Calculate conditional probabilities**
 
 Calculate the probability of being alive given smoking status.
-```{r conditional-probs, eval = FALSE}
+```{r conditional-probs, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 Whickham %>%
   count(smoker, outcome) %>%
-  group_by(___) %>%
-  mutate(proportion = n / sum(___))
+  group_by(smoker) %>%
+  mutate(proportion = n / sum(n))
 ```
 
 **Interpret the results:**
 
-- Proportion of smokers who are alive after 20 years: _____
-- Proportion of non-smokers who are alive after 20 years: _____
+- Proportion of smokers who are alive after 20 years: 0.761
+- Proportion of non-smokers who are alive after 20 years: 0.686
 
 **Does this meet your expectations? What do you notice?**
 
+This does not match my expectations because I would expect non-smokers to have higher survival rates after 20 years because of the health concerns associated with smoking such as cancer and cardiovascular disease. I wonder why this is the case.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 5", and push your changes.**
@@ -276,13 +277,13 @@ Create a new variable called `age_cat` using the following scheme:
 - age > 64 → "65+"
 
 **Use `case_when()` to create the categorical variable:**
-```{r create-age-cat, eval = FALSE}
+```{r create-age-cat, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-Whickham %
+Whickham <- Whickham %>%
   mutate(age_cat = case_when(
-    age <= ___ ~ "18-44",
-    age > ___ & age <= ___ ~ "45-64",
-    age > ___ ~ "65+"
+    age <= 44 ~ "18-44",
+    age > 44 & age <= 64 ~ "45-64",
+    age > 64 ~ "65+"
   ))
 ```
 
@@ -294,7 +295,7 @@ Whickham %
 - Saves the result back to `Whickham` using `<-`
 
 **Verify it worked:**
-```{r verify-age-cat, eval = FALSE}
+```{r verify-age-cat, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 Whickham %>%
   count(age_cat)
@@ -302,9 +303,9 @@ Whickham %>%
 
 **How many people are in each age category?**
 
-- 18-44: _____
-- 45-64: _____
-- 65+: _____
+- 18-44: 624 people
+- 45-64: 447 people
+- 65+: 243 people
 
 ---
 
@@ -315,36 +316,38 @@ Whickham %>%
 Re-create the visualization depicting the relationship between smoking status and health outcome, faceted by `age_cat`. What changed? What might explain this change? 
 
 **Part A: Create the faceted visualization**
-```{r faceted-viz, eval = FALSE}
+```{r faceted-viz, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = Whickham, aes(x = ___, fill = ___)) +
-  geom_bar(position = "___") +
-  facet_wrap(~___) +
+ggplot(data = Whickham, aes(x = smoker, fill = outcome)) +
+  geom_bar(position = "fill") +
+  facet_wrap(~age_cat) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___",
-    fill = "___"
+    title = "Relationship between Health Outcomes and Smoking Status, faceted by age group",
+    x = "smoking status",
+    y = "proportion",
+    fill = "health outcomes"
   )
 ```
+
+Now, across all three age groups (facets), I see that non-smokers tend to have a higher survival rate than smokers do. This aligns with my initial hypothesis that non-smokers would have better health outcomes than smokers. I think Simpson's paradox might explain this change, and the change was caused by uneven sample sizes and confounding variables.
 
 **Hint:** Use the same aesthetics as Exercise 5, but add `facet_wrap(~age_cat)`
 
 **Part B: Examine the three-way contingency table**
 
 Extend the contingency table from earlier by breaking it down by age category:
-```{r three-way-table, eval = FALSE}
+```{r three-way-table, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 Whickham %>%
   count(smoker, age_cat, outcome)
 ```
 
 **Calculate proportions within each age group:**
-```{r age-conditional-probs, eval = FALSE}
+```{r age-conditional-probs, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 Whickham %>%
   count(smoker, age_cat, outcome) %>%
-  group_by(___, ___) %>%
+  group_by(smoker, age_cat) %>%
   mutate(proportion = n / sum(n))
 ```
 
@@ -352,13 +355,15 @@ Whickham %>%
 
 **What changed when you added age_cat?**
 
-
+When I added age_cat, the proportions of non-smokers alive after 20 years became higher than the percentage of smokers alive after 20 years for all age groups. For example, using the conditional probability table, I found that 96.5% of non-smokers were alive after 20 years while only 94.7% of smokers were alive after 20 years for age ranges 18-44. 
 
 **Compare the relationship between smoking and outcome:**
 
-**Overall (from Exercise 5):** Smokers appeared to have _____________________ survival
+Smoking is associated with higher mortality rates after 20 years. There is a positive relationship between the two variables. 
 
-**Within each age group (from Exercise 7):** Smokers appear to have 
+**Overall (from Exercise 5):** Smokers appeared to have higher survival rates.
+
+**Within each age group (from Exercise 7):** Smokers appear to have lower survival rates.
 
 **What might explain this change?**
 
@@ -370,6 +375,7 @@ Consider:
 
 **Your explanation:**
 
+People from ages 18-44 had the greatest number of smokers while people over and at the age 65 had the fewest number of smokers. To be more specific, the group 18-44 had 285 smokers, while the age group 65+ had 50 smokers. Also, using the contingency table, people in the age group 18-44 had higher survival rates overall, whether they smoked or did not smoke, compared to other groups. I think that as our bodies stop growing, we feel the effects of smoking more deeply, causing higher mortality rates in 20 years for people in older age groups. Statistically speaking, since more of the smokers were concentrated in the age group 18-44, which had higher survival rates, this caused the overall comparison between smokers and non-smokers to be inadequate for our level of analysis.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 6-7", and push your changes.**
