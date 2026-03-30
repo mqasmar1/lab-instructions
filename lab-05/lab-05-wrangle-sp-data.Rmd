@@ -79,7 +79,7 @@ Before we introduce the data, let's warm up with some simple exercises.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
 
-# Compelted warmp up
+# Completed warm up
 
 ---
 
@@ -108,7 +108,7 @@ We'll start our analysis by focusing on one state: Alaska.
 ## Exercise 1
 
 Filter the Denny's dataframe for Alaska (AK) and save the result as `dn_ak`. How many Denny's locations are there in Alaska?
-```{r filter-dennys-ak}
+```{r filter-dennys-ak, eval=TRUE}
 dn_ak <- dennys %>%           # Start with dennys dataset
   filter(state == "AK")        # Keep only rows where state is AK
 ```
@@ -121,7 +121,7 @@ dn_ak <- dennys %>%           # Start with dennys dataset
 
 **How many Denny's locations are in Alaska?** Use inline code to report the number.
 
-**Your answer:** There are _____ Denny's locations in Alaska.
+**Your answer:** There are `r nrow(dn_ak)` Denny's locations in Alaska.
 
 **Hint:** You can use inline code with `nrow(dn_ak)` to get the count.
 
@@ -130,7 +130,7 @@ dn_ak <- dennys %>%           # Start with dennys dataset
 ## Exercise 2
 
 Filter the La Quinta dataframe for Alaska (AK) and save the result as `lq_ak`. How many La Quinta locations are there in Alaska?
-```{r filter-laquinta-ak}
+```{r filter-laquinta-ak, eval=TRUE}
 lq_ak <- laquinta %>%         # Start with laquinta dataset
   filter(state == "AK")        # Keep only rows where state is AK
 ```
@@ -143,7 +143,7 @@ lq_ak <- laquinta %>%         # Start with laquinta dataset
 
 **How many La Quinta locations are in Alaska?** Use inline code to report the number.
 
-**Your answer:** There are _____ La Quinta locations in Alaska.
+**Your answer:** There are `r nrow(lq_ak)` La Quinta locations in Alaska.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
 
