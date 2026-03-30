@@ -392,40 +392,40 @@ Repeat the same analysis for North Carolina:
   Step (v) visualize and describe the distribution of these shortest distances using appropriate summary statistics
 
 **Here's a template you can adapt from the Alaska code:**
-```{r nc-analysis, eval = FALSE}
+```{r nc-analysis, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # (i) Filter for NC
 dn_nc <- dennys %>%
-  filter(state == "___")
+  filter(state == "NC")
 
 lq_nc <- laquinta %>%
-  filter(state == "___")
+  filter(state == "NC")
 
 # (ii) Join the data
-dn_lq_nc <- full_join(___, ___, by = "state")
+dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
 
 # (iii) Calculate distances
 dn_lq_nc <- dn_lq_nc %>%
   mutate(distance = haversine(
-    long1 = ___,
-    lat1 = ___,
-    long2 = ___,
-    lat2 = ___
+    long1 = longitude.x,
+    lat1 = latitude.x,
+    long2 = longitude.y,
+    lat2 = latitude.y
   ))
 
 # (iv) Find minimum distances
 dn_lq_nc_mindist <- dn_lq_nc %>%
-  group_by(___) %>%
-  summarise(closest = min(___))
+  group_by(address.x) %>%
+  summarise(closest = min(distance))
 
 # (v) Visualize
-ggplot(data = dn_lq_nc_mindist, aes(x = ___)) +
-  geom_histogram(binwidth = ___) +
+ggplot(data = dn_lq_nc_mindist, aes(x = closest)) +
+  geom_histogram(binwidth = 15) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of closest distances between Denny's and La Quinta in North Carolina",
+    x = "Distance (km)",
+    y = "Frequency"
   )
 
 # Summary statistics
@@ -441,6 +441,7 @@ dn_lq_nc_mindist %>%
 
 **Describe the distribution for North Carolina:**
 
+I notice that there is a mean closest distance of 65.4km and median closest distance of 53.5km. The standard deviation of the closest distances between La Quinta and Denny's in North Carolina is 53.4. The distribution is noticeably larger than the Alaska distribution, which only had 3 points. This distribution has 28 points and is skewed right.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 9", and push your changes.**
