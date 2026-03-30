@@ -514,14 +514,57 @@ I notice that there is a mean closest distance of 5.79km and median closest dist
 
 Repeat the same analysis for a state of your choosing, different than the ones we covered so far.
 
-**Which state did you choose?** _____
-```{r your-state-analysis, eval = FALSE}
+**Which state did you choose?** I chose California to do this analysis on.
+```{r your-state-analysis, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 # Your code here - adapt from Exercise 9
+# (i) Filter for CA
+dn_ca <- dennys %>%
+  filter(state == "CA")
 
+lq_ca <- laquinta %>%
+  filter(state == "CA")
+
+# (ii) Join the data
+dn_lq_ca <- full_join(dn_ca, lq_ca, by = "state")
+
+# (iii) Calculate distances
+dn_lq_ca <- dn_lq_ca %>%
+  mutate(distance = haversine(
+    long1 = longitude.x,
+    lat1 = latitude.x,
+    long2 = longitude.y,
+    lat2 = latitude.y
+  ))
+
+# (iv) Find minimum distances
+dn_lq_ca_mindist <- dn_lq_ca %>%
+  group_by(address.x) %>%
+  summarise(closest = min(distance))
+
+# (v) Visualize
+ggplot(data = dn_lq_ca_mindist, aes(x = closest)) +
+  geom_histogram(binwidth = 15) +
+  labs(
+    title = "Distribution of closest distances between Denny's and La Quinta in California",
+    x = "Distance (km)",
+    y = "Frequency"
+  )
+
+# Summary statistics
+dn_lq_ca_mindist %>%
+  summarise(
+    min = min(closest),
+    max = max(closest),
+    mean = mean(closest),
+    median = median(closest),
+    sd = sd(closest)
+  )
 ```
 
 **Describe the distribution for your chosen state:**
+
+I notice that there is a mean closest distance of 22.1km and median closest distance of 11.9km. The standard deviation of the closest distances between La Quinta and Denny's in California is 33.0. The distribution is noticeably larger than both the Alaska, NC, and TX distributions, which only had 3, 28, and 200 points, respectively. The California distribution has 400 points and is skewed right. The Denny's and La Quinta locations here seem to be a lot further than the locations in Texas and Alaska, but closer than the locations in North Carolina.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 11", and push your changes.**
