@@ -333,30 +333,30 @@ dn_lq_ak_mindist <- dn_lq_ak %>%
 
 ## Exercise 8
 
-Describe the distribution of the distances between Denny's and the nearest La Quinta locations in Alaska. Also include an appropriate visualization and relevant summary statistics.
+Describe the distribution of the distances between Denny's and the **nearest** La Quinta locations in Alaska. Also include an appropriate visualization and relevant summary statistics.
 
 **Create a visualization:**
-```{r visualize-ak-distances, eval = FALSE}
+```{r visualize-ak-distances, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = dn_lq_ak_mindist, aes(x = ___)) +
-  geom_histogram(binwidth = ___) +
+ggplot(data = dn_lq_ak_mindist, aes(x = closest)) +
+  geom_histogram(binwidth = 1) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of distances between Denny's and La Quinta locations in Alaska",
+    x = "Distance (km)",
+    y = "Frequency"
   )
 ```
 
 **Calculate summary statistics:**
-```{r summary-ak-distances, eval = FALSE}
+```{r summary-ak-distances, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 dn_lq_ak_mindist %>%
   summarise(
-    min = min(___),
-    max = max(___),
-    mean = mean(___),
-    median = median(___),
-    sd = sd(___)
+    min = min(closest),
+    max = max(closest),
+    mean = mean(closest),
+    median = median(closest),
+    sd = sd(closest)
   )
 ```
 
@@ -366,6 +366,7 @@ Consider shape, center, spread, and any unusual observations.
 
 **Your answer:**
 
+I notice that there is a mean closest distance of 4.41km and median closest distance of 5.20km. The standard deviation of the closest distances between La Quinta and Denny's in Alaska is 2.10. The distribution is very small, as there are only 3 observations of closest distances between Denny's and La Quinta in the dataset.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 8", and push your changes.**
