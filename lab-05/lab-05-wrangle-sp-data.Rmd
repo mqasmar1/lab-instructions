@@ -246,14 +246,14 @@ Now that we have the data in the format we wanted, all that is left is to calcul
 
 What function from the tidyverse do we use to add a new variable to a data frame while keeping the existing variables?
 
-**Your answer:** _____
+**Your answer:** We use the mutate() function.
 
 ---
 
 One way of calculating the distance between any two points on the earth is to use the Haversine distance formula. This formula takes into account the fact that the earth is not flat, but instead spherical.
 
 This function is not available in base R, but here it is as a custom function we can use:
-```{r haversine-function}
+```{r haversine-function, eval=TRUE}
 haversine <- function(long1, lat1, long2, lat2, round = 3) {
   # convert to radians
   long1 = long1 * pi / 180
@@ -286,14 +286,14 @@ haversine <- function(long1, lat1, long2, lat2, round = 3) {
 Calculate the distances between all pairs of Denny's and La Quinta locations and save this variable as `distance`. Make sure to save this variable in the `dn_lq_ak` data frame so that you can use it later.
 
 **Remember:** Use the `<-` assignment operator to save the result back to `dn_lq_ak`, just like in Lab 04 when we added the `country` variable.
-```{r calculate-distances, eval = FALSE}
+```{r calculate-distances, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 dn_lq_ak <- dn_lq_ak %>%
   mutate(distance = haversine(
-    long1 = ___,      # longitude from Denny's (has .x suffix)
-    lat1 = ___,       # latitude from Denny's (has .x suffix)
-    long2 = ___,      # longitude from La Quinta (has .y suffix)
-    lat2 = ___        # latitude from La Quinta (has .y suffix)
+    long1 = longitude.x,      # longitude from Denny's (has .x suffix)
+    lat1 = latitude.x,       # latitude from Denny's (has .x suffix)
+    long2 = longitude.y,      # longitude from La Quinta (has .y suffix)
+    lat2 = latitude.y        # latitude from La Quinta (has .y suffix)
   ))
 ```
 
@@ -311,7 +311,7 @@ dn_lq_ak <- dn_lq_ak %>%
 
 Calculate the minimum distance between a Denny's and La Quinta for each Denny's location. To do so we group by Denny's locations and calculate a new variable that stores the information for the minimum distance.
 
-```{r min-distance-ak, eval = FALSE}
+```{r min-distance-ak, eval = TRUE}
 dn_lq_ak_mindist <- dn_lq_ak %>%
   group_by(address.x) %>%              # Group by each Denny's address
   summarise(closest = min(distance))   # Find the minimum distance for each group
