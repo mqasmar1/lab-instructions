@@ -171,7 +171,7 @@ How many pairings are there between all Denny's and all La Quinta locations in A
 
 **Hint:** If there are 3 Denny's and 2 La Quinta locations, how many total pairings are there?
 
-**Your answer:** There are _____ pairings between Denny's and La Quinta locations in Alaska.
+**Your answer:** There are 6 pairings between Denny's and La Quinta locations in Alaska.
 
 ---
 
@@ -204,7 +204,7 @@ In practice we mostly use mutating joins. In this case we want to keep all rows 
 ![Full join of Denny's and La Quinta locations in AK](img/dennys-laquinta-sketches/dennys-laquinta-sketches.004.png){height="300px" width="300px"}
 
 Let's join the data on Denny's and La Quinta locations in Alaska:
-```{r join-ak-data}
+```{r join-ak-data, eval=TRUE}
 dn_lq_ak <- full_join(dn_ak, lq_ak, by = "state")  # Join the two datasets
 ```
 
@@ -226,11 +226,11 @@ How many observations are in the joined `dn_lq_ak` data frame? What are the name
 
 **Your answers:**
 
-**Number of observations:** _____
+**Number of observations:** There are `r nrow(dn_lq_ak)` observations in the joined dataframe.
 
 **Variable names:** Run `names(dn_lq_ak)` in your Console and list them below:
 
-
+The names of the variables in the joined dataframe are "address.x", "city.x", "state", "zip.x", "longitude.x", "latitude.x", "address.y", "city.y", "zip.y", "longitude.y", and "latitude.y". 
 
 **Note about variable names:** You'll notice `.x` and `.y` suffixes on many variables. The `.x` means the variable comes from the first data frame (`dn_ak`), and `.y` means it comes from the second data frame (`lq_ak`). These suffixes are added because both data frames have variables with the same names (like `address`, `city`, `longitude`, `latitude`), and R can't have duplicate column names.
 
