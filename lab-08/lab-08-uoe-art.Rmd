@@ -202,13 +202,13 @@ After you complete all three scripts, you'll have a CSV file in your `data` fold
 Let's load that data and analyze it.
 
 ## Load the Scraped Data
-```{r load-scraped-data, eval = FALSE}
+```{r load-scraped-data, eval = TRUE}
 #remember to switch eval = FALSE to TRUE when you have your data
 uoe_art <- read_csv("data/uoe_art.csv")
 ```
 
 **Verify it loaded correctly:**
-```{r verify-data, eval = FALSE}
+```{r verify-data, eval = TRUE}
 glimpse(uoe_art)
 ```
 
@@ -226,7 +226,7 @@ Now that we have the data, let's clean it up! Many titles have dates in parenthe
 - `date`: The date information (if it exists)
 
 We'll use the `separate()` function to split at the first `(` character:
-```{r separate-title-date, eval = FALSE}
+```{r separate-title-date, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 uoe_art <- uoe_art %>%
   separate(
@@ -258,12 +258,12 @@ uoe_art <- uoe_art %>%
 Now let's extract just the year from the date column and save it as a numeric variable.
 
 **Fill in the blanks:**
-```{r extract-year, eval = FALSE}
+```{r extract-year, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 uoe_art <- uoe_art %>%
   mutate(
-    year = str_extract(___, "\\d{4}"),     # Extract 4-digit number
-    year = as.numeric(___)                  # Convert to numeric
+    year = str_extract(date, "\\d{4}"),     # Extract 4-digit number
+    year = as.numeric(year)                  # Convert to numeric
   )
 ```
 
