@@ -9,8 +9,39 @@ library(rvest)
 # (Copy and paste the scrape_page function here, or source the file)
 
 scrape_page <- function(url) {
-  # Your function from script 02
-  # (Copy it here)
+  
+  # Read the page
+  page <- read_html(url)
+  
+  # Extract titles
+  titles <- page %>%
+    html_nodes(".record-title") %>%
+    html_node("a") %>%
+    html_text() %>%
+    str_squish()
+  
+  # Extract links
+  links <- page %>%
+    html_nodes(".record-title") %>%
+    html_node("a") %>%
+    html_attr("href") %>%
+    str_replace("\\.", "https://collections.ed.ac.uk/art")
+  
+  # Extract artists
+  artists <- page %>%
+    html_nodes(".artist") %>%             # Fill in with the correct selector
+    html_text() %>%
+    str_squish()
+    artists <- ifelse(artists == "", NA, artists)
+  
+  n <- min(length(titles), length(links), length(artists))  
+    
+  # Create and return tibble
+  tibble(
+    title = titles[1:n],
+    artist = artists[1:n],
+    link = links[1:n]
+  )
 }
 
 
@@ -36,14 +67,14 @@ root <- "https://collections.ed.ac.uk/art/search/*:*/Collection:%22edinburgh+col
 # Step 2: Create a sequence of offset numbers
 # We need: 0, 10, 20, 30, ..., 2960
 # Fill in the blanks:
-offsets <- seq(from = ___, to = ___, by = ___)
+offsets <- seq(from = 0, to = 2960, by = 10)
 
 # Check: How many URLs will we have?
 length(offsets)  # Should be 297
 
 # Step 3: Paste the root and offsets together
 # Fill in the blanks:
-urls <- paste0(___, ___)
+urls <- paste0(root, offsets)
 
 # Check the first few URLs
 head(urls)
@@ -64,7 +95,7 @@ head(urls)
 # The function will scrape 297 pages, one at a time.
 
 # Fill in the blanks:
-uoe_art <- map_dfr(___, ___)
+uoe_art <- map_dfr(urls, scrape_page)
 
 # What this does:
 # - map_dfr takes each element of urls
@@ -99,7 +130,7 @@ glimpse(uoe_art)
 # Save the scraped data to a CSV file so we can use it in the analysis
 
 # Fill in the blanks:
-write_csv(___, "data/___.csv")
+write_csv(uoe_art, "lab-08/data/uoe_art.csv")
 
 # Hint: 
 # - First argument: the data frame to save (uoe_art)
