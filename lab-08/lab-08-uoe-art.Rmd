@@ -1,16 +1,19 @@
 ---
 title: "Lab 08 - University of Edinburgh Art Collection"
 author: "Max Asmar"
-output: 
+output:
+  pdf_document:
+    toc: true
+    latex_engine: xelatex
   tufte::tufte_html:
     css: ../lab.css
-    tufte_variant: "envisioned"
+    tufte_variant: envisioned
     highlight: pygments
-  tufte::tufte_handout:
-    latex_engine: xelatex
-    highlight: pygments
-    keep_tex: true
-link-citations: yes
+  tufte::tufte_handout: default
+  html_document:
+    toc: true
+    df_print: paged
+link-citations: true
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = TRUE)
@@ -290,7 +293,8 @@ skim(uoe_art)
 **Your findings:**
 
 - Number of pieces with missing artist: 0
-- Number of pieces with missing year: 0
+- Number of pieces with missing year: 784
+- There are also 530 missing dates, which might overlap with missing year.
 
 **Why might this information be missing?**
 
@@ -335,6 +339,8 @@ uoe_art %>%
 ```
 
 **Visit the link for this piece and find the correct year:** 
+
+Visited the Edinburgh art collection website and found that the dates for the following pieces are in ranges such as 1700-1850.
 
 **Why didn't our code capture it correctly?**
 
@@ -394,21 +400,21 @@ uoe_art %>%
 Final question! How many art pieces have the word "child" in their title? Make sure to capture both "child" and "Child".
 
 **Hint:** `str_detect()` can be helpful here. You can use `(?i)` in your pattern to make it case-insensitive, or use `str_to_lower()` first.
-```{r count-child, eval = FALSE}
+```{r count-child, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Option 1: Case-insensitive search
 uoe_art %>%
-  filter(str_detect(___, "(?i)child")) %>%
+  filter(str_detect(title, "(?i)child")) %>%
   nrow()
 
 # Option 2: Convert to lowercase first
-uoe_art %>%
-  filter(str_detect(str_to_lower(___), "___")) %>%
-  nrow()
+# uoe_art %>%
+  # filter(str_detect(str_to_lower(___), "___")) %>%
+  # nrow()
 ```
 
-**Number of pieces with "child" in the title:** _____
+**Number of pieces with "child" in the title:** 9 pieces have "child" in the title.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 14", and push your changes.**
 
