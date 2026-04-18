@@ -328,33 +328,36 @@ There is an observation of Art in the Edinburgh Collection that was created in 1
 Find which piece has the out of the ordinary year and go to its page on the art collection website to find the correct year for it. Can you tell why our code didn't capture the correct year information? Correct the error in the data frame and visualize the data again.
 
 **Find the problematic observation:**
-```{r find-outlier, eval = FALSE}
+```{r find-outlier, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 uoe_art %>%
-  filter(year < 1000 | year > 2030)  # Look for unreasonable years
+  filter(year < 1800)  # Look for unreasonable years
 ```
 
 **Visit the link for this piece and find the correct year:** 
 
 **Why didn't our code capture it correctly?**
 
+There are 5 pieces with out of the ordinary years in the dataset: Queen Anne apron, Patchwork quilt, Queen Anne chair cover, Georgian waistcoat, and Chairseat. I think our code did not capture it correctly because the University of Edinburgh is unsure of the date. For Chair seat, it says the date is "1700?-1850?", which is extremely unusual. On the website, this matches up. It is hard to pinpoint the date of Chair seat because it is unknown, which causes this error.
 
 
 **Correct the error:**
-```{r fix-year, eval = FALSE}
+```{r fix-year, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-uoe_art <- uoe_art %>%
-  mutate(year = if_else(
-    ___ == "___",          # Condition: if title equals the problematic one
-    ___,                    # Then: set year to correct value
-    ___                     # Else: keep original year
-  ))
+# There are no scraping errors with the pieces. All of the years are accurate, but some years are unknown. For example Chair seat was created between 1700 and 1850. This is information directly from the website and in the dataframe.
 ```
 
 **Recreate the histogram to verify the fix:**
-```{r verify-fix, eval = FALSE}
+```{r verify-fix, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 # Your histogram code from Exercise 11
+ggplot(data = uoe_art, aes(x = year)) +
+  geom_histogram(binwidth = 10) +
+  labs(
+    title = "Distribution of Art in Edinburgh Collection by year",
+    x = "Year",
+    y = "Count"
+  )
 ```
 
 ---
@@ -362,23 +365,23 @@ uoe_art <- uoe_art %>%
 ## Exercise 13
 
 Who is the most commonly featured artist in the collection? Do you know them? Any guess as to why the university has so many pieces from them?
-```{r most-common-artist, eval = FALSE}
+```{r most-common-artist, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 uoe_art %>%
-  count(___, sort = TRUE) %>%
+  count(artist, sort = TRUE) %>%
   head(10)
 ```
 
-**Most common artist:** 
+**Most common artist:** The most common artist is Emma Gillies, but for many of the pieces the artist is unknown. The number of observations with unknown artists is higher than the number of observations for a known artist.
 
-**Number of pieces:** 
+**Number of pieces:** Emma Gillies has 157 pieces in the collection.
 
-**Do you know this artist?** 
-
-
+**Do you know this artist?** No, however I might google Emma Gillies.
 
 
-**Why might the university have so many of their pieces?**
+
+
+**Why might the university have so many of their pieces?** The university might have so many of their pieces because her art was from the early 20th century, which is when the art collection received the most pieces and probably had the most resources.
 
 
 
