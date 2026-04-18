@@ -273,7 +273,7 @@ uoe_art <- uoe_art %>%
 
 **Explain the warnings:** What do the warnings mean? Why are we okay with them?
 
-
+The warnings mean that some dates could not be converted into a year. For example, if the date of the art collected was unknown, there could not be a numeric year. We are okay with them because the years have an NA value if this is the case.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 9", and push your changes.**
 
@@ -282,18 +282,19 @@ uoe_art <- uoe_art %>%
 ## Exercise 10
 
 Print out a summary of the data frame using the `skim()` function. How many pieces have artist info missing? How many have year info missing?
-```{r skim-data, eval = FALSE}
+```{r skim-data, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-skim(___)
+skim(uoe_art)
 ```
 
 **Your findings:**
 
-- Number of pieces with missing artist: _____
-- Number of pieces with missing year: _____
+- Number of pieces with missing artist: 0
+- Number of pieces with missing year: 0
 
 **Why might this information be missing?**
 
+When I built the scrape_page function in Script 3, I trimmed the dataset to have only the observations which contained artist, year, and title. I did this because the script would not run with missing variables, and I thought this was a good way to get around that.
 
 
 ---
@@ -301,14 +302,14 @@ skim(___)
 ## Exercise 11
 
 Make a histogram of years. Use a reasonable binwidth. Do you see anything out of the ordinary?
-```{r year-histogram, eval = FALSE}
+```{r year-histogram, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = uoe_art, aes(x = ___)) +
-  geom_histogram(binwidth = ___) +
+ggplot(data = uoe_art, aes(x = year)) +
+  geom_histogram(binwidth = 10) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of Art in Edinburgh Collection by year",
+    x = "Year",
+    y = "Count"
   )
 ```
 
@@ -316,7 +317,7 @@ ggplot(data = uoe_art, aes(x = ___)) +
 
 **What looks out of the ordinary?**
 
-
+There is an observation of Art in the Edinburgh Collection that was created in 1700. This is unusual because most of the art is concentrated around the mid 20th century to the present.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 10-11", and push your changes.**
 
