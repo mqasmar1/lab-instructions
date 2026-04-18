@@ -31,26 +31,26 @@ page <- read_html(first_url)
 
 # Step 2: Extract the title nodes
 page %>%
-  html_nodes(".iteminfo") %>%      # Get all iteminfo sections
-  html_node("h3 a")                 # Get the h3 a tags within each
+  html_nodes(".record-title") %>%      # Get all iteminfo sections
+  html_node("a")                 # Get the h3 a tags within each
 
 # Step 3: Extract just the text from these nodes
 page %>%
-  html_nodes(".iteminfo") %>%
-  html_node("h3 a") %>%
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
   html_text()                       # Extract text content
 
 # Step 4: Clean up the whitespace
 page %>%
-  html_nodes(".iteminfo") %>%
-  html_node("h3 a") %>%
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
   html_text() %>%
   str_squish()                      # Remove extra spaces
 
 # Step 5: Save as a vector
 titles <- page %>%
-  html_nodes(".iteminfo") %>%
-  html_node("h3 a") %>%
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
   html_text() %>%
   str_squish()
 
@@ -67,8 +67,8 @@ titles
 
 # Extract the href attribute
 page %>%
-  html_nodes(".iteminfo") %>%
-  html_node("h3 a") %>%
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
   html_attr("href")                 # Get the href attribute
 
 # These are "relative links" - they're missing the beginning of the URL
@@ -84,10 +84,10 @@ page %>%
 
 # Fill in the blanks:
 links <- page %>%
-  html_nodes(".iteminfo") %>%
-  html_node("h3 a") %>%
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
   html_attr("href") %>%
-  str_replace("\\.", "___")         # Replace . with the full URL root
+  str_replace("\\.", "https://collections.ed.ac.uk/art")         # Replace . with the full URL root
 
 # Hint: The pattern "\\." matches a period at the start
 # Replace it with: "https://collections.ed.ac.uk/art"
@@ -105,7 +105,7 @@ links
 # Step 2: Fill in the blanks with the correct CSS selector
 
 artists <- page %>%
-  html_nodes("___") %>%             # Fill in with the correct selector
+  html_nodes(".artist") %>%             # Fill in with the correct selector
   html_text() %>%
   str_squish()
 
@@ -119,9 +119,9 @@ artists
 
 # Fill in the blanks:
 first_ten <- tibble(
-  title = ___,
-  artist = ___,
-  link = ___
+  title = titles,
+  artist = artists,
+  link = links
 )
 
 # Check your work
@@ -135,39 +135,39 @@ first_ten
 # Step 1: Go to the website and click "Next" to go to page 2
 # Step 2: Copy the URL from your browser and paste it below
 
-second_url <- "___"
+second_url <- "https://collections.ed.ac.uk/art/search/*:*/Collection:%22edinburgh+college+of+art%7C%7C%7CEdinburgh+College+of+Art%22?offset=10"
 
 # Step 3: Copy and adapt the scraping code from above
 # (You can copy from line 18 onward and change 'first_url' to 'second_url')
 
 # Read the page
-page <- read_html(___)
+page <- read_html(second_url)
 
 # Extract titles
 titles <- page %>%
-  html_nodes("___") %>%
-  html_node("___") %>%
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
   html_text() %>%
   str_squish()
 
 # Extract links
 links <- page %>%
-  html_nodes("___") %>%
-  html_node("___") %>%
-  html_attr("___") %>%
-  str_replace("___", "___")
+  html_nodes(".record-title") %>%
+  html_node("a") %>%
+  html_attr("href") %>%
+  str_replace("\\.", "https://collections.ed.ac.uk/art")
 
 # Extract artists  
 artists <- page %>%
-  html_nodes("___") %>%
+  html_nodes(".artist") %>%             # Fill in with the correct selector
   html_text() %>%
   str_squish()
 
 # Combine into tibble
 second_ten <- tibble(
-  title = ___,
-  artist = ___,
-  link = ___
+  title = titles,
+  artist = artists,
+  link = links
 )
 
 # Check your work
