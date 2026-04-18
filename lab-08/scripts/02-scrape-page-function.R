@@ -40,33 +40,33 @@ add_two(10)   # Returns 12
 scrape_page <- function(url) {
   
   # Read the page
-  page <- read_html(___)
+  page <- read_html(url)
   
   # Extract titles
   titles <- page %>%
-    html_nodes("___") %>%
-    html_node("___") %>%
+    html_nodes(".record-title") %>%
+    html_node("a") %>%
     html_text() %>%
     str_squish()
   
   # Extract links
   links <- page %>%
-    html_nodes("___") %>%
-    html_node("___") %>%
-    html_attr("___") %>%
-    str_replace("___", "___")
+    html_nodes(".record-title") %>%
+    html_node("a") %>%
+    html_attr("href") %>%
+    str_replace("\\.", "https://collections.ed.ac.uk/art")
   
   # Extract artists
   artists <- page %>%
-    html_nodes("___") %>%
+    html_nodes(".artist") %>%             # Fill in with the correct selector
     html_text() %>%
     str_squish()
   
   # Create and return tibble
   tibble(
-    title = ___,
-    artist = ___,
-    link = ___
+    title = titles,
+    artist = artists,
+    link = links
   )
 }
 
