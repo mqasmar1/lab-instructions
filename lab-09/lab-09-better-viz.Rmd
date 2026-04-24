@@ -1,15 +1,15 @@
 ---
 title: "Lab 09 - Conveying the right message through visualisation"
-author: "Your Name"
+author: "Max Asmar"
 output: 
-  tufte::tufte_handout:
-    latex_engine: xelatex
-    highlight: pygments
-    keep_tex: true
   tufte::tufte_html:
     css: ../lab.css
     tutle_variant: "envisioned"
     highlight: pygments
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
 link-citations: yes
 ---
 ```{r setup, include=FALSE}
