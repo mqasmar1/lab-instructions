@@ -103,7 +103,7 @@ knitr::include_graphics("img/masks-v-nomasks.png")
 - What design choices make it misleading?
 - What would an honest version look like?
 
-The story shows that counties that mandated masks had higher rates of Covid 19 than counties that did not mandate masks. It is weird that both groups are plotted on the same graph when they have different y axis scales. I think the design choice of having 2 y axes that do not start at the same level and not showing axis titles makes the graph misleading. An honest version would have axis titles and having the y axis start at 0 so that the differences are not overemphasized.
+The story shows that counties that mandated masks had lower rates of Covid 19 than counties that did not mandate masks. It is weird that both groups are plotted on the same graph when they have different y axis scales. I think the design choice of having 2 y axes that do not start at the same level and not showing axis titles makes the graph misleading. An honest version would have axis titles and having the y axis start at 0 so that the differences are not overemphasized.
 ---
 
 ## Exercise 1
@@ -229,15 +229,17 @@ Make a visualization that more accurately (and honestly) tells the story.
 - What labels would make the story clear?
 
 **Create your improved visualization:**
-```{r improved-viz, eval = FALSE}
+```{r improved-viz, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = ___, aes(x = ___, y = ___, fill = ___)) +
-  geom__() +
+ggplot(data = mask_data, aes(x = date, y = deaths, fill = maskpolicy)) +
+  geom_col(position = "dodge") +
+  coord_flip() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___",
-    fill = "___"
+    title = "Distribution of Covid 19 Average Daily Cases in Kansas per 100,000",
+    subtitle = "Comparison across counties with mask and no mask mandates",
+    x = "Dates",
+    y = "Average Daily Cases",
+    fill = "Mask Policy",
   )
 ```
 
@@ -257,14 +259,17 @@ What message is more clear in your visualization than it was in the original vis
 
 **Original visualization suggests:** 
 
+The original visualization suggests that counties without a mask mandate had similar or higher daily rates of Covid 19, per 100,000. 
 
 
 **Your improved visualization shows:**
 
+My improved visualization shows that there are significantly more average daily cases per 100,000 in counties with a mask mandate, than without a mask mandate. This does not necessarily mean that mask mandates cause a higher rate of Covid 19, but in places with more Covid 19 cases, there might be a greater need for mask mandates.
 
 
 **What specific design choices made the difference?**
 
+Plotting the daily cases per 100,000 for both groups on the same set of axes helped show this as well as using a bar chart with the coordinates flipped to bring attention to the disparity.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 2-3", and push your changes.**
