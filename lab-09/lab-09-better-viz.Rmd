@@ -103,6 +103,7 @@ knitr::include_graphics("img/masks-v-nomasks.png")
 - What design choices make it misleading?
 - What would an honest version look like?
 
+The story shows that counties that mandated masks had higher rates of Covid 19 than counties that did not mandate masks. It is weird that both groups are plotted on the same graph when they have different y axis scales. I think the design choice of having 2 y axes that do not start at the same level and not showing axis titles makes the graph misleading. An honest version would have axis titles and having the y axis start at 0 so that the differences are not overemphasized.
 ---
 
 ## Exercise 1
@@ -116,6 +117,8 @@ Before writing code, answer these questions:
 - How many rows will you need? 
 - How many columns will you need? 
 - What will you call your variables? 
+
+I will need 46 rows because there are 23 dates for each group that can be estimated for the dataset. I will need 4 columns to represent county, maskpolicy, deaths, and date to recreate the dataset. I will call the variables county (Kansas), maskpolicy, deaths, and date
 
 **Creating data with `tribble()`**
 
@@ -144,13 +147,57 @@ The code to create this is:
 - Last row doesn't need a comma
 
 **Your turn - create the mask data:**
-```{r create-mask-data, eval = FALSE}
+```{r create-mask-data, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 mask_data <- tribble(
-  ~county, ~maskpolicy, ~deaths,
-  "Kansas", "___", ___,
-  "Kansas", "___", ___,
-  # Add more rows as needed
+  ~county, ~maskpolicy, ~deaths, ~date,
+  "Kansas", "yes", 25, "7/12/2020",
+  "Kansas", "yes", 22, "7/13/2020",
+  "Kansas", "yes", 20, "7/14/2020",
+  "Kansas", "yes", 20, "7/15/2020",
+  "Kansas", "yes", 20, "7/16/2020",
+  "Kansas", "yes", 20, "7/17/2020",
+  "Kansas", "yes", 20, "7/18/2020",
+  "Kansas", "yes", 20, "7/19/2020",
+  "Kansas", "yes", 20, "7/20/2020",
+  "Kansas", "yes", 21, "7/21/2020",
+  "Kansas", "yes", 21, "7/22/2020",
+  "Kansas", "yes", 20, "7/23/2020",
+  "Kansas", "yes", 20, "7/24/2020",
+  "Kansas", "yes", 20, "7/25/2020",
+  "Kansas", "yes", 19, "7/26/2020",
+  "Kansas", "yes", 19, "7/27/2020",
+  "Kansas", "yes", 18, "7/28/2020",
+  "Kansas", "yes", 17, "7/29/2020",
+  "Kansas", "yes", 16, "7/30/2020",
+  "Kansas", "yes", 17, "7/31/2020",
+  "Kansas", "yes", 16, "8/01/2020",
+  "Kansas", "yes", 16, "8/02/2020",
+  "Kansas", "yes", 16, "8/03/2020",
+  
+  "Kansas", "no", 10, "7/12/2020",
+  "Kansas", "no", 10, "7/13/2020",
+  "Kansas", "no", 9, "7/14/2020",
+  "Kansas", "no", 9, "7/15/2020",
+  "Kansas", "no", 10, "7/16/2020",
+  "Kansas", "no", 10, "7/17/2020",
+  "Kansas", "no", 9, "7/18/2020",
+  "Kansas", "no", 9, "7/19/2020",
+  "Kansas", "no", 9, "7/20/2020",
+  "Kansas", "no", 8, "7/21/2020",
+  "Kansas", "no", 8, "7/22/2020",
+  "Kansas", "no", 8, "7/23/2020",
+  "Kansas", "no", 9, "7/24/2020",
+  "Kansas", "no", 10, "7/25/2020",
+  "Kansas", "no", 10, "7/26/2020",
+  "Kansas", "no", 10, "7/27/2020",
+  "Kansas", "no", 10, "7/28/2020",
+  "Kansas", "no", 10, "7/29/2020",
+  "Kansas", "no", 10, "7/30/2020",
+  "Kansas", "no", 9, "7/31/2020",
+  "Kansas", "no", 9, "8/01/2020",
+  "Kansas", "no", 9, "8/02/2020",
+  "Kansas", "no", 9, "8/03/2020"
 )
 ```
 
@@ -161,7 +208,7 @@ mask_data <- tribble(
 - You might want columns for: county, mask policy (yes/no), and deaths
 
 **Verify your data:**
-```{r check-data, eval = FALSE}
+```{r check-data, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 mask_data
 ```
