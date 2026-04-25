@@ -2,14 +2,14 @@
 title: "Lab 09 - Conveying the right message through visualisation"
 author: "Max Asmar"
 output: 
-  tufte::tufte_html:
-    css: ../lab.css
-    tutle_variant: "envisioned"
-    highlight: pygments
   tufte::tufte_handout:
     latex_engine: xelatex
     highlight: pygments
     keep_tex: true
+  tufte::tufte_html:
+    css: ../lab.css
+    tutle_variant: "envisioned"
+    highlight: pygments
 link-citations: yes
 ---
 ```{r setup, include=FALSE}
@@ -284,18 +284,21 @@ What, if any, useful information do these data and your visualization tell us ab
 
 **What the data/visualization tells us:**
 
+The visualization tells us that mask mandates are more associated with higher daily rates of Covid 19, per 100,000 people in Kansas. 
 
 
 **What the data/visualization does NOT tell us:**
 
+The visualization does not tell us that mask wearing causes higher rates of Covid 19. There is simply an association between mask wearing and higher daily rates of the disease per 100,000.
 
 
 **Does this align with what you know about mask wearing?**
 
+No, this does not align with what I know about mask wearing. Before starting this lab, I thought that mask-wearing would be negatively associated with the daily rate of Covid 19 per 100,000.
 
 **What additional information would you need to draw stronger conclusions?**
 
-
+To draw stronger conclusions, I would take Covid 19 data from more states and across more dates. I would also need more control variables such as when the mandate was implemented.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 4", and push your changes.**
 
