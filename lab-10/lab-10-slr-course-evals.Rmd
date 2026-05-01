@@ -94,6 +94,10 @@ The data can be found in the **openintro** package, and it's called `evals`. Sin
 
 **✓ Checkpoint:** Run `glimpse(evals)` in your Console to verify the data loaded correctly.
 
+```{r preview-evals, eval = TRUE, message = FALSE}
+    glimpse(evals)
+```
+
 ---
 
 # Exercises
@@ -105,31 +109,31 @@ The data can be found in the **openintro** package, and it's called `evals`. Sin
 Visualize the distribution of `score`. Is the distribution skewed? What does that tell you about how students rate courses? Is this what you expected to see? Why, or why not? Include any summary statistics and visualizations you use in your response.
 
 **Create a histogram:**
-```{r score-histogram, eval = FALSE}
+```{r score-histogram, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = evals, aes(x = ___)) +
-  geom_histogram(binwidth = ___) +
+ggplot(data = evals, aes(x = score)) +
+  geom_histogram(binwidth = 0.25) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of Scores",
+    x = "Scores",
+    y = "Frequency"
   )
 ```
 
 **Hint:** Try binwidths like 0.25 or 0.5 for scores.
 
 **Calculate summary statistics:**
-```{r score-summary, eval = FALSE}
+```{r score-summary, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 evals %>%
   summarise(
-    min = min(___),
-    q1 = quantile(___, 0.25),
-    median = median(___),
-    mean = mean(___),
-    q3 = quantile(___, 0.75),
-    max = max(___),
-    sd = sd(___)
+    min = min(score),
+    q1 = quantile(score, 0.25),
+    median = median(score),
+    mean = mean(score),
+    q3 = quantile(score, 0.75),
+    max = max(score),
+    sd = sd(score)
   )
 ```
 
@@ -137,41 +141,41 @@ evals %>%
 
 **Shape (skewed left, skewed right, or symmetric?):** 
 
-
+The distribution of scores is skewed left.
 
 **What does this tell you about how students rate courses?**
 
-
+This tells me that students are more likely to rate courses closer to 5 stars.
 
 **Is this what you expected? Why or why not?**
 
-
+This is not what I expected. I expected that students would rate courses lower in general, closer to 3 stars because the survey is anonymous. I would expect the curve to follow a normal distribution centered at 3 stars, rather than a left skew.
 
 ---
 
 ## Exercise 2
 
 Visualize and describe the relationship between `score` and `bty_avg`.
-```{r score-bty-scatter, eval = FALSE}
+```{r score-bty-scatter, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = evals, aes(x = ___, y = ___)) +
+ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_point() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Professor Avg Beauty Rating v. Score",
+    x = "Average Beauty Rating",
+    y = "Score"
   )
 ```
 
 **Describe the relationship:**
 
-**Direction (positive, negative, or no relationship):** ___________________
+**Direction (positive, negative, or no relationship):** Positive relationship
 
-**Strength (weak, moderate, or strong):** _____________________________
+**Strength (weak, moderate, or strong):** Weak relationship
 
-**Form (linear, curved, or no pattern):** _____________________________
+**Form (linear, curved, or no pattern):** No pattern.
 
-**Are there any outliers?** ___________________________________________
+**Are there any outliers?** No.
 
 ---
 
@@ -181,24 +185,25 @@ Recreate the scatterplot from Exercise 2, but this time use `geom_jitter()`. Wha
 ```{marginfigure}
 **Hint:** See the help page for the function at http://ggplot2.tidyverse.org/reference/index.html.
 ```
-```{r score-bty-jitter, eval = FALSE}
+```{r score-bty-jitter, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_jitter() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Professor Avg Beauty Rating v. Score",
+    x = "Beauty Rating",
+    y = "Score"
   )
 ```
 
 **What does "jitter" mean?**
 
+Jitter means to create a scatter plot, but to add random noise to the points because they might overlap.
 
 
 **What was misleading about the initial scatterplot?**
 
-
+The original scatterplot showed little to no correlation between beauty rating and score, but the new scatterplot spreads out the points through adding random noise and shows a weak positive association.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-3", and push your changes.**
 
