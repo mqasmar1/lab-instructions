@@ -378,11 +378,11 @@ This tells me that the difference in average scores between male and female prof
 Fit a new linear model called `score_rank_fit` to predict average professor evaluation `score` based on `rank` of the professor. Based on the regression output, write the linear model and interpret the slopes and intercept in context of the data.
 
 **Fit the model:**
-```{r fit-score-rank, eval = FALSE}
+```{r fit-score-rank, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_rank_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(score ~ ___, data = evals)
+  fit(score ~ rank, data = evals)
 
 tidy(score_rank_fit)
 ```
@@ -391,18 +391,19 @@ tidy(score_rank_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times ranktenuretrack + \_\_\_ \times ranktenured$$
+$$\widehat{score} = 4.28 + (-0.13) \times ranktenuretrack + (-0.145) \times ranktenured$$
 
 **Interpret the intercept (for teaching faculty):**
 
-
+When the teacher is not tenured or not on a tenure track, the average rating is expected to be 4.28.
 
 **Interpret the slope for ranktenuretrack:**
 
-
+When the teacher is on the tenure track, we expect the average rating to decrease by 0.13 stars, on average.
 
 **Interpret the slope for ranktenured:**
 
+When the teacher is tenured, we expect the average rating to decrease by 0.145 stars, on average.
 
 
 ---
@@ -410,10 +411,10 @@ $$\widehat{score} = \_\_\_ + \_\_\_ \times ranktenuretrack + \_\_\_ \times rankt
 ## Exercise 12
 
 Create a new variable called `rank_relevel` where "tenure track" is the baseline level.
-```{r create-rank-relevel, eval = FALSE}
+```{r create-rank-relevel, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 evals <- evals %>%
-  mutate(rank_relevel = fct_relevel(rank, "___"))
+  mutate(rank_relevel = fct_relevel(rank, "tenure track"))
 ```
 
 **What this does:**
@@ -422,7 +423,7 @@ evals <- evals %>%
 - Put "tenure track" as the first argument to make it the baseline
 
 **Verify it worked:**
-```{r check-levels, eval = FALSE}
+```{r check-levels, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 levels(evals$rank_relevel)
 ```
@@ -436,11 +437,11 @@ The first level shown should be "tenure track".
 Fit a new linear model called `score_rank_relevel_fit` to predict average professor evaluation `score` based on `rank_relevel` of the professor. This is the new (releveled) variable you created in Exercise 12. Based on the regression output, write the linear model and interpret the slopes and intercept in context of the data. Also determine and interpret the R² of the model.
 
 **Fit the model:**
-```{r fit-score-rank-relevel, eval = FALSE}
+```{r fit-score-rank-relevel, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_rank_relevel_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(score ~ ___, data = evals)
+  fit(score ~ rank_relevel, data = evals)
 
 tidy(score_rank_relevel_fit)
 glance(score_rank_relevel_fit)
@@ -448,23 +449,24 @@ glance(score_rank_relevel_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times rankreleveltea ching + \_\_\_ \times rankreleveltenured$$
+$$\widehat{score} = 4.15 + 0.13 \times rankreleveltea ching + (-0.016) \times rankreleveltenured$$
 
 **Interpret the intercept (now for tenure track faculty):**
 
-
+When the teacher is on the tenure track, they are expected to have an average rating of 4.15 stars.
 
 
 **Interpret the slopes:**
 
+The rankrelevelteaching coefficient slope represents that when the teacher is not tenured, we expect the average rating to increase by 0.13 stars, on average. The rankreleveltenured coefficient slope represents that when the teacher is tenured, we expect the average rating to decrease by 0.016 stars, on average.
 
 
-
-**R² value:** _____
+**R² value:** 0.0116
 
 **Interpretation of R²:**
 
-
+Approximately 1.16% of the variability in professor evaluation scores
+is explained by their tenure track.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 11-13", and push your changes.**
