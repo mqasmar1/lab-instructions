@@ -3,14 +3,14 @@ title: "Lab 10 - Grading the professor, Pt. 1"
 subtitle: "Modeling with a single predictor"
 author: "Max Asmar"
 output: 
-  tufte::tufte_html:
-    css: ../lab.css
-    tufte_variant: "envisioned"
-    highlight: pygments
   tufte::tufte_handout:
     latex_engine: xelatex
     highlight: pygments
     keep_tex: true
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
 link-citations: yes
 ---
 ```{r include=FALSE}
@@ -114,7 +114,7 @@ Visualize the distribution of `score`. Is the distribution skewed? What does tha
 ggplot(data = evals, aes(x = score)) +
   geom_histogram(binwidth = 0.25) +
   labs(
-    title = "Distribution of Scores",
+    title = "Distribution of professor evaluation scores",
     x = "Scores",
     y = "Frequency"
   )
@@ -141,7 +141,7 @@ evals %>%
 
 **Shape (skewed left, skewed right, or symmetric?):** 
 
-The distribution of scores is skewed left.
+The distribution of professor evaluation scores is skewed left.
 
 **What does this tell you about how students rate courses?**
 
@@ -190,7 +190,7 @@ Recreate the scatterplot from Exercise 2, but this time use `geom_jitter()`. Wha
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_jitter() +
   labs(
-    title = "Professor Avg Beauty Rating v. Score",
+    title = "Professor Avg Beauty Rating v. professor evaluation score",
     x = "Beauty Rating",
     y = "Score"
   )
@@ -203,7 +203,7 @@ Jitter means to create a scatter plot, but to add random noise to the points bec
 
 **What was misleading about the initial scatterplot?**
 
-The original scatterplot showed little to no correlation between beauty rating and score, but the new scatterplot spreads out the points through adding random noise and shows a weak positive association.
+The original scatterplot showed little to no correlation between beauty rating and professor evaluation score, but the new scatterplot spreads out the points through adding random noise and shows a weak positive association.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-3", and push your changes.**
 
@@ -268,7 +268,7 @@ Interpret the slope of the linear model in context of the data.
 
 **Interpretation in context:**
 
-For every one star increase in average beauty rating, we expect the course score to increase by 0.067 stars, on average.
+For every one star increase in average beauty rating, we expect the professor evaluation score to increase by 0.067 stars, on average.
 
 
 **Template:** "For every one unit increase in [x variable], we expect [y variable] to [increase/decrease] by [slope value] units, on average."
@@ -344,12 +344,12 @@ $$\widehat{score} = 4.09 + 0.142 \times gendermale$$
 
 **Interpret the intercept:**
 
-When the Professor is female, the average score is expected to be 4.09 stars.
+When the Professor is female, the average professor evaluation score is expected to be 4.09 stars.
 
 
 **Interpret the slope:**
 
-When the professor is male, we expect the average score to increase by 0.142 stars, on average.
+When the professor is male, we expect the average professor evaluation score to increase by 0.142 stars, on average.
 
 ---
 
@@ -367,7 +367,7 @@ $$\widehat{score} = 4.09 + 0.142 \times 0 = 4.09$$
 
 **What does this tell you about the difference in average scores?**
 
-This tells me that the difference in average scores between male and female professors is 0.142 stars, where male professors have higher average scores.
+This tells me that the difference in professor evaluation scores between male and female professors is 0.142 stars, where male professors have higher average scores.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 9-10", and push your changes.**
 
@@ -395,15 +395,15 @@ $$\widehat{score} = 4.28 + (-0.13) \times ranktenuretrack + (-0.145) \times rank
 
 **Interpret the intercept (for teaching faculty):**
 
-When the teacher is not tenured or not on a tenure track, the average rating is expected to be 4.28.
+When the teacher is not tenured or not on a tenure track, the average professor evaluation score is expected to be 4.28.
 
 **Interpret the slope for ranktenuretrack:**
 
-When the teacher is on the tenure track, we expect the average rating to decrease by 0.13 stars, on average.
+When the teacher is on the tenure track, we expect the average professor evaluation score to decrease by 0.13 stars, on average.
 
 **Interpret the slope for ranktenured:**
 
-When the teacher is tenured, we expect the average rating to decrease by 0.145 stars, on average.
+When the teacher is tenured, we expect the average professor evaluation score to decrease by 0.145 stars, on average.
 
 
 ---
@@ -453,12 +453,12 @@ $$\widehat{score} = 4.15 + 0.13 \times rankreleveltea ching + (-0.016) \times ra
 
 **Interpret the intercept (now for tenure track faculty):**
 
-When the teacher is on the tenure track, they are expected to have an average rating of 4.15 stars.
+When the teacher is on the tenure track, they are expected to have an average professor evaluation score of 4.15 stars.
 
 
 **Interpret the slopes:**
 
-The rankrelevelteaching coefficient slope represents that when the teacher is not tenured, we expect the average rating to increase by 0.13 stars, on average. The rankreleveltenured coefficient slope represents that when the teacher is tenured, we expect the average rating to decrease by 0.016 stars, on average.
+The rankrelevelteaching coefficient slope represents that when the teacher is not tenured, we expect the average professor evaluation score to increase by 0.13 stars, on average. The rankreleveltenured coefficient slope represents that when the teacher is tenured, we expect the average professor evaluation score to decrease by 0.016 stars, on average.
 
 
 **R² value:** 0.0116
@@ -476,13 +476,13 @@ is explained by their tenure track.
 ## Exercise 14
 
 Create another new variable called `tenure_eligible` that labels "teaching" faculty as "no" and labels "tenure track" and "tenured" faculty as "yes".
-```{r create-tenure-eligible, eval = FALSE}
+```{r create-tenure-eligible, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 evals <- evals %>%
   mutate(tenure_eligible = if_else(
-    rank == "___", 
-    "___", 
-    "___"
+    rank == "teaching", 
+    "no", 
+    "yes"
   ))
 ```
 
@@ -491,7 +491,7 @@ evals <- evals %>%
 - Otherwise, set to "yes"
 
 **Verify it worked:**
-```{r check-tenure-eligible, eval = FALSE}
+```{r check-tenure-eligible, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 evals %>%
   count(rank, tenure_eligible)
@@ -506,11 +506,11 @@ You should see teaching faculty labeled as "no" and the other two as "yes".
 Fit a new linear model called `score_tenure_eligible_fit` to predict average professor evaluation `score` based on `tenure_eligible`ness of the professor. This is the new (regrouped) variable you created in the previous exercise. Based on the regression output, write the linear model and interpret the slopes and intercept in context of the data. Also determine and interpret the R² of the model.
 
 **Fit the model:**
-```{r fit-score-tenure, eval = FALSE}
+```{r fit-score-tenure, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_tenure_eligible_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(score ~ ___, data = evals)
+  fit(score ~ tenure_eligible, data = evals)
 
 tidy(score_tenure_eligible_fit)
 glance(score_tenure_eligible_fit)
@@ -518,28 +518,29 @@ glance(score_tenure_eligible_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times tenureeligibleyes$$
+$$\widehat{score} = 4.28 + (-0.141) \times tenureeligibleyes$$
 
 **Interpret the intercept:**
 
-
+The intercept means that when the faculty is not tenure eligible, their average professor evaluation score is expected to be 4.28 stars.
 
 
 **Interpret the slope:**
 
+The slope represents that when the teacher is tenure eligible, we expect the average professor evaluation score to decrease by 0.141 stars, on average.
 
 
-
-**R² value:** _____
+**R² value:** 0.0115
 
 **Interpretation of R²:**
 
-
+Approximately 1.15% of the variability in professor evaluation scores
+is explained by their tenure eligibility.
 
 
 **How does this R² compare to the R² from Exercise 13? What does this tell you?**
 
-
+This R^2 value is basically equivalent to the R^2 value from Exercise 13. This tells me that the professor's tenure eligibility explains the same level of variation in professor evaulation scores as the professor's rank. 
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 14-15", and push your changes.**
