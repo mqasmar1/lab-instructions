@@ -327,28 +327,29 @@ is explained by their average beauty rating.
 Fit a new linear model called `score_gender_fit` to predict average professor evaluation `score` based on `gender` of the professor. Based on the regression output, write the linear model and interpret the slope and intercept in context of the data.
 
 **Fit the model:**
-```{r fit-score-gender, eval = FALSE}
+```{r fit-score-gender, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_gender_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(___ ~ ___, data = evals)
+  fit(score ~ gender, data = evals)
 
 tidy(score_gender_fit)
 ```
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times gendermale$$
+$$\widehat{score} = 4.09 + 0.142 \times gendermale$$
 
 **Note:** R uses the first category alphabetically as the reference (baseline) level. So "female" is the reference here.
 
 **Interpret the intercept:**
 
+When the Professor is female, the average score is expected to be 4.09 stars.
 
 
 **Interpret the slope:**
 
-
+When the professor is male, we expect the average score to increase by 0.142 stars, on average.
 
 ---
 
@@ -358,15 +359,15 @@ What is the equation of the line corresponding to male professors? What is it fo
 
 **For male professors (where gender = male, so gendermale = 1):**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times 1 = \_\_\_$$
+$$\widehat{score} = 4.09 + 0.142 \times 1 = 4.232$$
 
 **For female professors (where gender = female, so gendermale = 0):**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times 0 = \_\_\_$$
+$$\widehat{score} = 4.09 + 0.142 \times 0 = 4.09$$
 
 **What does this tell you about the difference in average scores?**
 
-
+This tells me that the difference in average scores between male and female professors is 0.142 stars, where male professors have higher average scores.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 9-10", and push your changes.**
 
