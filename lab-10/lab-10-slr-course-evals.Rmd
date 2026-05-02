@@ -219,11 +219,11 @@ Linear model is in the form $\hat{y} = b_0 + b_1 x$.
 Let's see if the apparent trend in the plot is something more than natural variation. Fit a linear model called `score_bty_fit` to predict average professor evaluation `score` by average beauty rating (`bty_avg`). Based on the regression output, write the linear model.
 
 **Fit the model:**
-```{r fit-score-bty, eval = FALSE}
+```{r fit-score-bty, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_bty_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(___ ~ ___, data = evals)
+  fit(score ~ bty_avg, data = evals)
 
 # View the results
 tidy(score_bty_fit)
@@ -231,7 +231,7 @@ tidy(score_bty_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
+$$\widehat{score} = 3.88 + 0.067 \times bty\_avg$$
 
 **Hint:** The intercept is the estimate for `(Intercept)` and the slope is the estimate for `bty_avg`.
 
@@ -240,15 +240,15 @@ $$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
 ## Exercise 5
 
 Recreate the scatterplot from Exercise 2, and add the regression line to this plot in orange color, with shading for the uncertainty of the line turned off.
-```{r scatter-with-line, eval = FALSE}
+```{r scatter-with-line, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = evals, aes(x = ___, y = ___)) +
+ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_point() +
-  geom_smooth(method = "___", se = ___, color = "___") +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Average Beauty vs Score Scatter Plot with Linear Regression",
+    x = "Average Beauty Rating",
+    y = "Score"
   )
 ```
 
@@ -264,11 +264,11 @@ ggplot(data = evals, aes(x = ___, y = ___)) +
 
 Interpret the slope of the linear model in context of the data.
 
-**The slope is:** _____ (get this from the tidy output)
+**The slope is:** 0.067 (get this from the tidy output)
 
 **Interpretation in context:**
 
-For every 
+For every one star increase in average beauty rating, we expect the course score to increase by 0.067 stars, on average.
 
 
 **Template:** "For every one unit increase in [x variable], we expect [y variable] to [increase/decrease] by [slope value] units, on average."
@@ -279,15 +279,21 @@ For every
 
 Interpret the intercept of the linear model in context of the data. Comment on whether or not the intercept makes sense in this context.
 
-**The intercept is:** _____ (get this from the tidy output)
+**The intercept is:** 3.88 stars (get this from the tidy output)
 
 **Interpretation in context:**
 
-When 
+When the beauty rating is 0, we expect the course rating to be 3.88 stars.
 
 **Does this make sense in context? Why or why not?**
 
+```{r min_average_beauty, eval = TRUE}
+# Remember to change eval=FALSE to eval=TRUE!
+evals %>%
+  summarise(min = min(bty_avg))
+```
 
+This does not make sense in context because the minimum average beauty rating is 1.67 stars. I think the y intercept is 3.88 stars because the lm model is curve fitting, without considering real world limitations, such as minimum stars.
 
 **Hint:** Think about what a beauty rating of 0 means and whether it's realistic.
 
@@ -298,17 +304,17 @@ When
 Determine the R² of the model and interpret it in context of the data.
 
 **Calculate R²:**
-```{r rsquared-bty, eval = FALSE}
+```{r rsquared-bty, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 glance(score_bty_fit)
 ```
 
-**The R² value is:** _____ (look for `r.squared` in the output)
+**The R² value is:** 0.035 (look for `r.squared` in the output)
 
 **Interpretation in context:**
 
-Approximately _____% of the variability in _______________
-is explained by 
+Approximately 3.5% of the variability in professor evaluation scores
+is explained by their average beauty rating.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 4-8", and push your changes.**
 
