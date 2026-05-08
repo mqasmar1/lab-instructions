@@ -110,7 +110,9 @@ glimpse(evals)
 
 **How many observations are in the dataset?** Use inline code to report.
 
-**Your answer:** The dataset has \_\_\_\_\_ observations.
+**Your answer:** The dataset has `r nrow(evals)` observations.
+
+The dataset has `r ncol(evals)` variables.
 
 **✓ Checkpoint:** You should see 463 observations and 23 variables.
 
@@ -122,11 +124,11 @@ glimpse(evals)
 
 Fit a linear model (one you have fit in Lab 10): `score_bty_fit`, predicting average professor evaluation `score` based on average beauty rating (`bty_avg`) only. Write the linear model, and note the R² and the adjusted R².
 
-```{r fit-score-bty, eval = FALSE}
+```{r fit-score-bty, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_bty_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(score ~ ___, data = evals)
+  fit(score ~ bty_avg, data = evals)
 
 # View coefficients
 tidy(score_bty_fit)
@@ -137,11 +139,11 @@ glance(score_bty_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
+$$\widehat{score} = 3.88 + 0.0666 \times bty\_avg$$
 
-**R² value:** \_\_\_\_\_
+**R² value:** 0.0350
 
-**Adjusted R² value:** \_\_\_\_\_
+**Adjusted R² value:** 0.0329
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
 
