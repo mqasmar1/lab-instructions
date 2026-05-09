@@ -312,11 +312,11 @@ If male professors have a higher average beauty rating than female professors or
 
 Create a new model called `score_bty_rank_fit` with `gender` removed and `rank` added in. Write the equation of the linear model and interpret the slopes and intercept in context of the data.
 
-```{r fit-score-bty-rank, eval = FALSE}
+```{r fit-score-bty-rank, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_bty_rank_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(score ~ ___ + ___, data = evals)
+  fit(score ~ bty_avg + rank, data = evals)
 
 # View coefficients
 tidy(score_bty_rank_fit)
@@ -329,27 +329,27 @@ glance(score_bty_rank_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg + \_\_\_ \times ranktenuretrack + \_\_\_ \times ranktenured$$
+$$\widehat{score} = 3.98 + 0.067 \times bty\_avg -0.161 \times ranktenuretrack -0.126 \times ranktenured$$
 
 **Interpret the intercept:**
 
-For teaching faculty with a beauty rating of 0, the expected evaluation score is \_\_\_\_\_.
+For teaching faculty with a beauty rating of 0, the expected evaluation score is 3.98 stars.
 
 **Interpret the slope for bty_avg:**
 
-Holding rank constant, for every one unit increase in beauty rating, \_\_\_\_\_\_\_\_
+Holding rank constant, for every one unit increase in beauty rating, the average professor evaluation score should increase by 0.0678 stars.
 
 **Interpret the slope for ranktenuretrack:**
 
-Holding beauty rating constant, tenure track faculty are expected to score \_\_\_\_
+Holding beauty rating constant, tenure track faculty are expected to score 0.161 stars lower than teaching faculty. 
 
 **Interpret the slope for ranktenured:**
 
-Holding beauty rating constant, tenured faculty are expected to score \_\_\_\_\_\_\_\_
+Holding beauty rating constant, tenured faculty are expected to score  0.126 stars lower than teaching faculty. 
 
-**Adjusted R² for this model:** \_\_\_\_\_
+**Adjusted R² for this model:** 0.0403
 
-**How does this compare to score_bty_gen_fit?**
+**How does this compare to score_bty_gen_fit?** This R^2 value is less than the adjusted R^2 value of score_bty_gen_fit of 0.0550. This means that the score_bty_gen_fit described 1.47% more of the variance in mean professor evaluation scores.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercise 11", and push your changes.**
 
