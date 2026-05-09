@@ -242,11 +242,11 @@ For two professors who received the same beauty rating, which gender tends to ha
 
 If the coefficient is positive: Male professors tend to have higher scores. If the coefficient is negative: Female professors tend to have higher scores.
 
-**The coefficient is:** \_\_\_\_\_ (positive/negative)
+**The coefficient is:** positive
 
-**Therefore:**
+**Therefore:** If a professor is male, I expect the average professor evaluation rating to be 0.172 stars higher than if the professor was female, with all else held constant.
 
-**By how much?** \_\_\_\_\_
+**By how much?** 0.172 stars.
 
 ------------------------------------------------------------------------
 
@@ -256,9 +256,11 @@ How does the relationship between beauty and evaluation score vary between male 
 
 **Look at the coefficient for bty_avg in the multiple regression model.**
 
+The coefficient for bty_avg is 0.0742. 
+
 **Your answer:**
 
-The relationship between beauty and evaluation score \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ (does / does not) vary between male and female professors because \_\_\_\_\_\_\_\_\_\_
+The relationship between beauty and evaluation score does not vary between male and female professors because the model is not an interaction effects model, and gender does not impact the beauty coefficient.
 
 **Hint:** In this model, both genders have the same slope for bty_avg. The lines are parallel!
 
@@ -270,15 +272,15 @@ How do the adjusted R² values of `score_bty_gen_fit` and `score_bty_fit` compar
 
 **Compare the adjusted R² values:**
 
-**score_bty_fit adjusted R²:** \_\_\_\_\_ (from Exercise 2)
+**score_bty_fit adjusted R²:** 0.0329 (from Exercise 2)
 
-**score_bty_gen_fit adjusted R²:** \_\_\_\_\_ (from Exercise 3)
+**score_bty_gen_fit adjusted R²:** 0.0550 (from Exercise 3)
 
-**Difference:** \_\_\_\_\_
+**Difference:** 0.0221
 
 **Interpretation:**
 
-The adjusted R² increased/decreased by \_\_\_\_\_ when we added gender to the model. This tells us that gender \_\_\_\_\_\_
+The adjusted R² increased by 0.0221 when we added gender to the model. This tells us that gender explains 2.21% of the variability in professor evaluation scores not described by beauty. 
 
 **Note:** Adjusted R² accounts for the number of predictors, so it's better for comparing models with different numbers of predictors.
 
@@ -288,15 +290,17 @@ The adjusted R² increased/decreased by \_\_\_\_\_ when we added gender to the m
 
 Compare the slopes of `bty_avg` under the two models (`score_bty_fit` and `score_bty_gen_fit`). Has the addition of `gender` to the model changed the parameter estimate (slope) for `bty_avg`?
 
-**Slope of bty_avg in score_bty_fit:** \_\_\_\_\_ (from Exercise 2)
+**Slope of bty_avg in score_bty_fit:** 0.0666 (from Exercise 2)
 
-**Slope of bty_avg in score_bty_gen_fit:** \_\_\_\_\_ (from Exercise 3)
+**Slope of bty_avg in score_bty_gen_fit:** 0.0742 (from Exercise 3)
 
 **Has it changed?**
 
-The slope has changed/not changed. The difference is \_\_\_\_\_.
+The bty_avg slope has changed. The difference is 0.0076.
 
 **Why might this happen?**
+
+If male professors have a higher average beauty rating than female professors or vice versa, then adding gender as a predictor variable could change the weight of bty_avg in the model. 
 
 **Hint:** If beauty and gender are related (e.g., if male and female professors have different average beauty ratings), adding gender can change the bty_avg coefficient.
 
