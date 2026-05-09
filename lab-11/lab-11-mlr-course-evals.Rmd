@@ -155,11 +155,11 @@ $$\widehat{score} = 3.88 + 0.0666 \times bty\_avg$$
 
 Fit a linear model (one you have fit in Lab 10): `score_bty_gen_fit`, predicting average professor evaluation `score` based on average beauty rating (`bty_avg`) and `gender`. Write the linear model, and note the R² and the adjusted R².
 
-```{r fit-score-bty-gender, eval = FALSE}
+```{r fit-score-bty-gender, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 score_bty_gen_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(score ~ ___ + ___, data = evals)
+  fit(score ~ bty_avg + gender, data = evals)
 
 # View coefficients
 tidy(score_bty_gen_fit)
@@ -170,11 +170,11 @@ glance(score_bty_gen_fit)
 
 **Write the linear model equation:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg + \_\_\_ \times gendermale$$
+$$\widehat{score} = 3.75 + 0.0742 \times bty\_avg + 0.172 \times gendermale$$
 
-**R² value:** \_\_\_\_\_
+**R² value:** 0.0591
 
-**Adjusted R² value:** \_\_\_\_\_
+**Adjusted R² value:** 0.0550
 
 ------------------------------------------------------------------------
 
@@ -184,15 +184,15 @@ Interpret the slopes and intercept of `score_bty_gen_fit` in context of the data
 
 **Interpret the intercept:**
 
-The intercept represents
+The intercept represents that when the average beauty rating of the professor is 0 stars and the professor is female, then their average evaluation score is expected to be 3.75 stars.
 
 **Interpret the slope for bty_avg:**
 
-Holding gender constant, for every one unit increase in beauty rating, \_\_\_\_\_\_\_
+Holding gender constant, for every one star increase in beauty rating, we expect there to be a 0.0742 star increase in professor evaluation score. 
 
 **Interpret the slope for gendermale:**
 
-Holding beauty rating constant, male professors are expected to score \_\_\_\_\_\_\_\_
+Holding beauty rating constant, male professors are expected to score 0.172 stars higher in average evaluation score than female professors.
 
 **Important:** In multiple regression, we interpret each coefficient "holding all other variables constant."
 
@@ -204,7 +204,7 @@ What percent of the variability in `score` is explained by the model `score_bty_
 
 **Use the R² value from Exercise 3.**
 
-Approximately \_\_\_\_\_% of the variability in professor evaluation scores is explained by beauty rating and gender.
+Approximately 5.91% of the variability in professor evaluation scores is explained by beauty rating and gender.
 
 ------------------------------------------------------------------------
 
@@ -216,9 +216,9 @@ What is the equation of the line corresponding to *just* male professors?
 
 **Starting with:** $\widehat{score} = b_0 + b_1 \times bty\_avg + b_2 \times gendermale$
 
-**For males (gendermale = 1):**
+**For males (gendermale = 1):** 
 
-$$\widehat{score} = b_0 + b_1 \times bty\_avg + b_2 \times 1$$
+$$\widehat{score} = 3.75 + 0.0742 \times bty\_avg + 0.172 \times 1$$
 
 **Simplified:**
 
@@ -226,7 +226,7 @@ $$\widehat{score} = (b_0 + b_2) + b_1 \times bty\_avg$$
 
 **With your actual values:**
 
-$$\widehat{score} = \_\_\_ + \_\_\_ \times bty\_avg$$
+$$\widehat{score} = 3.922 + 0.0742 \times bty\_avg$$
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 3-6", and push your changes.**
 
