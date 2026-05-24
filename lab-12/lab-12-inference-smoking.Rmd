@@ -1,7 +1,7 @@
 ---
 title: "Lab 12 - Smoking during pregnancy"
 subtitle: "Simulation based inference"
-author: "Your Name"
+author: "Max Asmar"
 output: 
   tufte::tufte_html:
     tufte_variant: "envisioned"
