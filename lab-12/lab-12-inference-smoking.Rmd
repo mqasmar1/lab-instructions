@@ -94,6 +94,12 @@ The data can be found in the **openintro** package, and it's called `ncbirths`. 
 
 **✓ Checkpoint:** Run `glimpse(ncbirths)` in your Console to verify the data loaded correctly.
 
+Ran in console.
+
+```{r glimpse-ncbirths, eval = TRUE, message = FALSE}
+    glimpse(ncbirths)
+```
+
 ---
 
 ## Set a Seed!
@@ -103,7 +109,7 @@ In this lab we'll be generating random samples through bootstrapping. The last t
 **What is a seed?** A seed tells R where to start its random number generation. Using the same seed ensures you get the same "random" results each time you knit.
 ```{r set-seed, eval = TRUE}
 # Set your seed here - use any number you like
-set.seed(12345)
+set.seed(1234)
 ```
 
 **Choose any number** - just make sure you use the same seed throughout the entire lab.
@@ -125,11 +131,11 @@ glimpse(ncbirths)
 
 **Your answers:**
 
-**What are the cases?** Each case represents _______________________________
+**What are the cases?** Each case represents information regarding births in North Carolina. Some variables include the mothers age, fathers age, gender of the baby, and if the mother was a smoker or nonsmoker.
 
 **How many cases are there?** Use inline code to report the number.
 
-There are _____ cases in our sample.
+There are `r nrow(ncbirths)` cases in our sample.
 
 ---
 
@@ -138,7 +144,7 @@ There are _____ cases in our sample.
 The first step in the analysis of a new dataset is getting acquainted with the data. Make summaries of the variables in your dataset, determine which variables are categorical and which are numerical. For numerical variables, are there outliers? If you aren't sure or want to take a closer look at the data, make a graph.
 
 **Create summary statistics:**
-```{r summary-stats, eval = FALSE}
+```{r summary-stats, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # For numerical variables
@@ -152,31 +158,54 @@ ncbirths %>%
   summary()
 ```
 
-**List the variables:**
+**List the variables:**'
+
+The variables are fage, mage,  weeks, visits, gained, weight, mature, premie, marital, lowbirthweight, gender, habit, and whitemom.
 
 **Categorical variables:** 
 
-
+The categorical variables are mature, premie, marital, lowbirthweight, gender, habit, and whitemom
 
 **Numerical variables:**
 
-
+The numerical variables are fage, mage,  weeks, visits, gained, and weight.
 
 **Check for outliers in key variables:**
-```{r check-outliers, eval = FALSE}
+```{r check-outliers, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Boxplot for weight
-ggplot(data = ncbirths, aes(y = ___)) +
+ggplot(data = ncbirths, aes(y = weight)) +
   geom_boxplot() +
-  labs(title = "___")
+  labs(title = "Distribution of weight for North Carolina Births")
 
 # Boxplot for other numerical variables as needed
+
+ggplot(data = ncbirths, aes(y = fage)) +
+  geom_boxplot() +
+  labs(title = "Distribution of father ages for North Carolina Births")
+
+ggplot(data = ncbirths, aes(y = mage)) +
+  geom_boxplot() +
+  labs(title = "Distribution of mother ages for North Carolina Births")
+
+ggplot(data = ncbirths, aes(y = weeks)) +
+  geom_boxplot() +
+  labs(title = "Distribution of pregancy length for North Carolina Births")
+
+ggplot(data = ncbirths, aes(y = visits)) +
+  geom_boxplot() +
+  labs(title = "Distribution of hospital visits for North Carolina Births")
+
+ggplot(data = ncbirths, aes(y = gained)) +
+  geom_boxplot() +
+  labs(title = "Distribution of weight gained for North Carolina Births")
+
 ```
 
 **Are there outliers?**
 
-
+Yes, there are outliers for all of the numerical variables. I can identify this because there are isolated dots on all of the boxplots for the numerical variables. 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 1-2", and push your changes.**
 
