@@ -358,44 +358,45 @@ Consider the possible relationship between a mother's smoking habit and the weig
 ## Exercise 6
 
 Make side-by-side boxplots displaying the relationship between `habit` and `weight`. What does the plot highlight about the relationship between these two variables?
-```{r boxplot-habit-weight, eval = FALSE}
+```{r boxplot-habit-weight, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
-ggplot(data = ncbirths, aes(x = ___, y = ___)) +
+ggplot(data = ncbirths, aes(x = habit, y = weight)) +
   geom_boxplot() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Effect of Smoking Habits on Baby Weight",
+    x = "Habit",
+    y = "Weight (lbs)"
   )
 ```
 
 **What does the plot show about the relationship?**
 
+The plot shows that there is no correlation between smoking status and baby weight.
 
 
 **Which group has higher median weight?**
 
-
+Nonsmokers have babies with slightly higher median weights.
 
 ---
 
 ## Exercise 7
 
 Before moving forward, save a version of the dataset omitting observations where there are NAs for `habit`. You can call this version `ncbirths_habitgiven`.
-```{r remove-na-habit, eval = FALSE}
+```{r remove-na-habit, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ncbirths_habitgiven <- ncbirths %>%
-  filter(!is.na(___))
+  filter(!is.na(habit))
 
 # Check how many observations we have
 nrow(ncbirths_habitgiven)
 ```
 
-**How many observations remain after removing NAs?** _____
+**How many observations remain after removing NAs?** 999 observations.
 
 The box plots show how the medians of the two distributions compare, but we can also compare the means of the distributions using the following to first group the data by the `habit` variable, and then calculate the mean `weight` in these groups:
 
-```{r habit-means, eval = FALSE}
+```{r habit-means, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE after completing the code above
 ncbirths_habitgiven %>%
   group_by(habit) %>%
@@ -404,9 +405,9 @@ ncbirths_habitgiven %>%
 
 **Observed difference in means:**
 
-Mean weight for nonsmokers: _____ pounds
-Mean weight for smokers: _____ pounds
-Difference: _____ pounds
+Mean weight for nonsmokers: 7.14 pounds
+Mean weight for smokers: 6.83 pounds
+Difference: 0.31 pounds
 
 **There is an observed difference, but is this difference statistically significant?**
 
