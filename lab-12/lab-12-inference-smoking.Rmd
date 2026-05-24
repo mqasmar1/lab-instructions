@@ -231,22 +231,24 @@ Note that this is a **two-sided test** because we're testing for any change (cou
 ## Exercise 3
 
 Create a filtered data frame called `ncbirths_white` that contains data only from white mothers. Then, calculate the mean of the weights of their babies.
-```{r filter-white, eval = FALSE}
+```{r filter-white, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ncbirths_white <- ncbirths %>%
-  filter(___ == "___")
+  filter(whitemom == "white")
 
 # Calculate mean weight
 mean_weight_white <- ncbirths_white %>%
-  summarise(mean_weight = mean(___)) %>%
+  summarise(mean_weight = mean(weight)) %>%
   pull(mean_weight)
 
 mean_weight_white
 ```
 
-**The observed mean weight is:** _____ pounds
+**The observed mean weight is:** 7.25 pounds
 
 **How does this compare to 7.43 pounds?** 
+
+The observed mean weight of 7.25 pounds is less than 7.43 pounds. 
 
 ---
 
@@ -266,23 +268,25 @@ part (c) **Random sampling:** Sample should be random or representative
 
 **Independence:** 
 
-
+Yes, the observations are independent because births are generally independent as the birth of one baby does not affect the birth of another one in the same period, generally speaking.
 
 **Sample size:** How many white mothers are in the dataset?
-```{r check-sample-size, eval = FALSE}
+```{r check-sample-size, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 nrow(ncbirths_white)
 ```
 
-There are _____ observations. Is this large enough? 
+There are 714 observations. Is this large enough? 
 
+Yes, this is large enough because we should be able to eliminate some noise in the data and significantly reduce our p values because we have around 700 observations.
 
 **Random sampling:**
 
+Yes, according to the Help section of the ncbirths dataset, the observations are a random sample of births in North Carolina. 
 
 **Conclusion: Are conditions satisfied?** 
 
-
+Yes, all 3 conditions are satisfied. This means we can reasonably use simulation based inference.
 ---
 
 ## Exercise 5
@@ -302,7 +306,7 @@ Step 3. Shift the distribution to center at the null value (7.43)
 Step 4. See how extreme our observed mean is
 
 **Run the hypothesis test:**
-```{r hypothesis-test-weight, eval = FALSE}
+```{r hypothesis-test-weight, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Calculate observed statistic (difference from null)
@@ -313,13 +317,13 @@ obs_stat <- ncbirths_white %>%
 # Generate null distribution
 null_dist <- ncbirths_white %>%
   specify(response = weight) %>%
-  hypothesize(null = "point", mu = ___) %>%  # Null value in pounds
+  hypothesize(null = "point", mu = 7.43) %>%  # Null value in pounds
   generate(reps = 10000, type = "bootstrap") %>%
   calculate(stat = "mean")
 
 # Visualize null distribution
 visualize(null_dist) +
-  shade_p_value(obs_stat = obs_stat, direction = "___") +
+  shade_p_value(obs_stat = obs_stat, direction = "two-sided") +
   labs(
     title = "Null distribution of mean baby weight",
     x = "Mean weight (pounds)",
@@ -328,20 +332,18 @@ visualize(null_dist) +
 
 # Calculate p-value
 null_dist %>%
-  get_p_value(obs_stat = obs_stat, direction = "___")
+  get_p_value(obs_stat = obs_stat, direction = "two-sided")
 ```
 
 **Hints:**
 - `mu = 7.43` for the null value
 - `direction = "two-sided"` for a two-sided test
 
-**The p-value is:** _____
+**The p-value is:** 0.0008
 
 **Interpretation:**
 
-At a significance level of 0.05, we 
-
-because the p-value is 
+At a significance level of 0.05, we reject the null hypothesis because the p-value is 0.0008, which is less than the significance level. In other words, because the p value is below the significance level, we know that there has been significant change in the average weight of White babies from 1995 to 2004.
 
 In context: 
 
