@@ -71,6 +71,8 @@ Step 3. Click **Knit** to make sure the document compiles
 
 **Step 3:** Commit your changes with message "Updated author name".
 
+#Completed warm up
+
 **Step 4:** Push to GitHub and verify the changes are visible in your repo.
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed warm up", and push your changes.**
