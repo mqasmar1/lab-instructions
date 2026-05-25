@@ -278,7 +278,7 @@ nrow(ncbirths_white)
 
 There are 714 observations. Is this large enough? 
 
-Yes, this is large enough because we should be able to eliminate some noise in the data and significantly reduce our p values because we have around 700 observations.
+Yes, this is large enough because we have around 700 observations which should be large enough to see clear patterns in the data, if any.
 
 **Random sampling:**
 
@@ -347,6 +347,8 @@ At a significance level of 0.05, we reject the null hypothesis because the p-val
 
 In context: 
 
+There has been significant change in the average weight of White babies from 1995 to 2004, according to the data and p values.
+
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 3-5", and push your changes.**
 
 ---
@@ -371,7 +373,7 @@ ggplot(data = ncbirths, aes(x = habit, y = weight)) +
 
 **What does the plot show about the relationship?**
 
-The plot shows that there is no correlation between smoking status and baby weight.
+The plot shows that there is a slighly negative relationship between maternal smoking and median baby weight.
 
 
 **Which group has higher median weight?**
@@ -558,27 +560,23 @@ In this portion of the analysis we focus on two variables. The first one is `mat
 First, a non-inference task: Determine the age cutoff for younger and mature mothers. Use a method of your choice, and explain how your method works.
 
 **Explore the maturemom variable:**
-```{r explore-maturemom, eval = FALSE}
+```{r explore-mature, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Look at the relationship between age and maturemom
 ncbirths %>%
-  group_by(maturemom) %>%
+  group_by(mature) %>%
   summarise(
     min_age = min(mage, na.rm = TRUE),
     max_age = max(mage, na.rm = TRUE)
   )
-
-# Or look at specific ages
-ncbirths %>%
-  filter(mage >= 34, mage <= 36) %>%
-  count(mage, maturemom)
 ```
 
-**The age cutoff is:** _____ years
+**The age cutoff is:** 35 years
 
 **Explanation of method:**
 
+I determined this by finding the age range for both mature moms and younger moms. First I group the data by maternal maturity status, and then I find summary statistics of the minimum and maximum age for each group. I then identify the minimum age for mature mom (35) and the maximum age for younger mom (34)
 
 
 The other variable of interest is `lowbirthweight`.
@@ -591,9 +589,9 @@ Conduct a hypothesis test evaluating whether the proportion of low birth weight 
 
 **State the hypotheses:**
 
-**H₀:** 
+**H₀:** The proportion of low birth weight babies is the same for mature and younger mothers.
 
-**Hₐ:** 
+**Hₐ:** The proportion of low birth weight babies is greater for mature mothers than younger mothers.
 
 **Note:** This is a **one-sided test** because we're testing if mature mothers have a *higher* proportion.
 
@@ -601,57 +599,60 @@ Conduct a hypothesis test evaluating whether the proportion of low birth weight 
 
 **Independence:**
 
-___________________________________________________________________________
+Yes, there is mostly independence because each birth does not affect the other births in most cases, however there are few exceptions such as twins.
 
 **Sample size:**
-```{r check-maturemom-counts, eval = FALSE}
+```{r check-maturemom-counts, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ncbirths %>%
-  filter(!is.na(maturemom), !is.na(lowbirthweight)) %>%
-  count(maturemom)
+  filter(!is.na(mature), !is.na(lowbirthweight)) %>%
+  count(mature)
 ```
+
+The sample uses data from 133 mature moms and 867 younger moms.
 
 **Are conditions satisfied?**
 
+Yes, because there is random sampling, independence, and a large sample size.
 
 
 **Calculate observed proportions:**
-```{r observed-proportions, eval = FALSE}
+```{r observed-proportions, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ncbirths %>%
-  filter(!is.na(maturemom), !is.na(lowbirthweight)) %>%
-  group_by(maturemom) %>%
+  filter(!is.na(mature), !is.na(lowbirthweight)) %>%
+  group_by(mature) %>%
   summarise(prop_low = mean(lowbirthweight == "low"))
 ```
 
 **Observed proportions:**
 
-Younger mothers: _____
-Mature mothers: _____
+Younger mothers: 0.107
+Mature mothers: 0.135
 
 **Run the hypothesis test:**
-```{r hypothesis-test-mature, eval = FALSE}
+```{r hypothesis-test-mature, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Create filtered dataset
 ncbirths_mature <- ncbirths %>%
-  filter(!is.na(maturemom), !is.na(lowbirthweight))
+  filter(!is.na(mature), !is.na(lowbirthweight))
 
 # Calculate observed statistic
 obs_diff_prop <- ncbirths_mature %>%
-  specify(lowbirthweight ~ maturemom, success = "low") %>%
+  specify(lowbirthweight ~ mature, success = "low") %>%
   calculate(stat = "diff in props", order = c("mature mom", "younger mom"))
 
 # Generate null distribution
 null_dist_mature <- ncbirths_mature %>%
-  specify(lowbirthweight ~ maturemom, success = "low") %>%
+  specify(lowbirthweight ~ mature, success = "low") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 10000, type = "permute") %>%
   calculate(stat = "diff in props", order = c("mature mom", "younger mom"))
 
 # Visualize
 visualize(null_dist_mature) +
-  shade_p_value(obs_stat = obs_diff_prop, direction = "___") +
+  shade_p_value(obs_stat = obs_diff_prop, direction = "greater") +
   labs(
     title = "Null distribution of difference in proportions",
     x = "Difference in proportion (mature - younger)"
@@ -659,18 +660,18 @@ visualize(null_dist_mature) +
 
 # Calculate p-value
 p_value <- null_dist_mature %>%
-  get_p_value(obs_stat = obs_diff_prop, direction = "___")
+  get_p_value(obs_stat = obs_diff_prop, direction = "greater")
 
 p_value
 ```
 
 **Hint:** `direction = "greater"` for a one-sided test
 
-**The p-value is:** _____
+**The p-value is:** 0.210
 
 **Conclusion:**
 
-
+Since the p value of 0.210 is greater than the significance level of 0.05, there is inadequate evidence to support the hypothesis that the proportion of low birth weight babies is greater for mature mothers than younger mothers.
 
 **If significant, construct a 95% confidence interval:**
 ```{r ci-mature, eval = FALSE}
@@ -678,7 +679,7 @@ p_value
 # Only run if you found a significant difference
 
 boot_dist_mature <- ncbirths_mature %>%
-  specify(lowbirthweight ~ maturemom, success = "low") %>%
+  specify(lowbirthweight ~ mature, success = "low") %>%
   generate(reps = 10000, type = "bootstrap") %>%
   calculate(stat = "diff in props", order = c("mature mom", "younger mom"))
 
@@ -688,11 +689,7 @@ ci_mature <- boot_dist_mature %>%
 ci_mature
 ```
 
-**The 95% confidence interval is:** (_____, _____)
-
-**Interpretation:**
-
-
+We do not need to run a confidence interval because the p value of 0.210 was greater than the significance level of 0.05.
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 12-13", and push your changes.**
