@@ -421,11 +421,11 @@ Write the hypotheses for testing if the average weights of babies born to smokin
 
 **Null hypothesis (H₀):**
 
-
+The average weights of babies born to smoking and non-smoking mothers are the same. 
 
 **Alternative hypothesis (Hₐ):**
 
-
+The average weights of babies born to smoking and non-smoking mothers are different.
 
 **Hint:** Since we're testing for "different" (not specifically higher or lower), this is a two-sided test.
 
@@ -439,41 +439,45 @@ Are the conditions necessary for conducting simulation-based inference satisfied
 
 **Independence:**
 
+Yes, every birth is mainly independent of another birth, with few exceptions such as having twins. 
 
 
 **Sample size in each group:**
-```{r check-habit-counts, eval = FALSE}
+```{r check-habit-counts, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 ncbirths_habitgiven %>%
   count(habit)
 ```
 
-Nonsmokers: _____ observations
-Smokers: _____ observations
+Nonsmokers: 873 observations
+Smokers: 126 observations
 
 **Are these large enough?** 
 
+Yes, this number of observations are large enough for simulation-based inference. 
 
 **Random sampling:**
 
-
+Yes, the study/dataset uses a random sample of births in North Carolina. 
 
 **Conclusion:**
 
-
+Yes, it is appropriate to use simulation-based inference to answer our hypotheses.
 
 ---
 
 ## Exercise 10
 
 Run the appropriate hypothesis test, calculate the p-value, and interpret the results in context of the data and the hypothesis test.
-```{r hypothesis-test-habit, eval = FALSE}
+```{r hypothesis-test-habit, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Calculate observed statistic
 obs_diff <- ncbirths_habitgiven %>%
   specify(weight ~ habit) %>%
   calculate(stat = "diff in means", order = c("nonsmoker", "smoker"))
+
+obs_diff
 
 # Generate null distribution
 null_dist_habit <- ncbirths_habitgiven %>%
@@ -484,7 +488,7 @@ null_dist_habit <- ncbirths_habitgiven %>%
 
 # Visualize
 visualize(null_dist_habit) +
-  shade_p_value(obs_stat = obs_diff, direction = "___") +
+  shade_p_value(obs_stat = obs_diff, direction = "two-sided") +
   labs(
     title = "Null distribution of difference in mean weights",
     x = "Difference in mean weight (nonsmoker - smoker)",
@@ -493,22 +497,23 @@ visualize(null_dist_habit) +
 
 # Calculate p-value
 null_dist_habit %>%
-  get_p_value(obs_stat = obs_diff, direction = "___")
+  get_p_value(obs_stat = obs_diff, direction = "two-sided")
 ```
 
-**The observed difference is:** _____ pounds
+**The observed difference is:** 0.316 pounds
 
-**The p-value is:** _____
+**The p-value is:** 0.0306
 
 **Interpretation:**
 
+We reject the null hypothesis because the p value of 0.0306 is less than the significance level of 0.05. In other words, the average weights of babies born to smoking and non-smoking mothers in North Carolina are different, on average by 0.316 pounds. 
 
 ---
 
 ## Exercise 11
 
 Construct a 95% confidence interval for the difference between the average weights of babies born to smoking and non-smoking mothers.
-```{r ci-habit, eval = FALSE}
+```{r ci-habit, eval = TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 # Generate bootstrap distribution
@@ -519,7 +524,7 @@ boot_dist_habit <- ncbirths_habitgiven %>%
 
 # Get confidence interval
 ci <- boot_dist_habit %>%
-  get_confidence_interval(level = ___, type = "percentile")
+  get_confidence_interval(level = 0.95, type = "percentile")
 
 ci
 
@@ -533,11 +538,11 @@ visualize(boot_dist_habit) +
   )
 ```
 
-**The 95% confidence interval is:** (_____, _____)
+**The 95% confidence interval is:** (0.0617, 0.582)
 
 **Interpretation in context:**
 
-We are 95% confident that 
+We are 95% confident that the difference between the average weights of babies born to smoking and non-smoking mothers is between 0.0617 and 0.582 pounds. 
 
 
 🧶 ✅ ⬆️ **Knit, commit with message "Completed Exercises 8-11", and push your changes.**
